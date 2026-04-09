@@ -26,11 +26,24 @@ Route::prefix("admin")
     ->name("admin.")
     ->middleware(["auth"])
     ->group(function () {
+        Route::get("/dashboard", [
+            Admin\DashboardController::class,
+            "index",
+        ])->name("dashboard");
         Route::resource("users", Admin\UserController::class);
         Route::resource("costums", Admin\CostumController::class);
-        Route::resource("categories", Admin\CategoryController::class);
+        Route::get("finances/export", [
+            Admin\FinanceController::class,
+            "export",
+        ])->name("finances.export");
         Route::resource("finances", Admin\FinanceController::class);
         Route::resource("maintenances", Admin\MaintenanceController::class);
+
+        // Master Data
+        Route::prefix("master")->name("master.")->group(function () {
+            Route::resource("categories", Admin\CategoryController::class)
+                ->except(["show"]);
+        });
 
         Route::controller(Admin\OrderController::class)
             ->prefix("orders")

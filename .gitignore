@@ -29,6 +29,7 @@ database.sqlite
 # Public
 /public/storage
 /public/hot
+/public/build
 
 # IDE & Editor
 .vscode/

@@ -10,10 +10,11 @@ class Finance extends Model
     use HasFactory;
 
     protected $fillable = [
-        'category_id',
-        'total',
-        'desc',
-        'type',
+        "category_id",
+        "total",
+        "desc",
+        "type",
+        "created_at",
     ];
 
     public function category()

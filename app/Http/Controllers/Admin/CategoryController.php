@@ -15,44 +15,62 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $categories = $this->categoryService->getAll();
-        return view('admin.categories.index', compact('categories'));
+        $type = $request->query('type', 'costum');
+        $categories = $this->categoryService->getAll(['type' => $type]);
+        return view('admin.master.categories.index', compact('categories', 'type'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('admin.categories.create');
+        $type = $request->query('type', 'costum');
+        return view('admin.master.categories.create', compact('type'));
     }
 
     public function store(Request $request)
     {
-        // TODO: implement
-        return redirect()->route('admin.categories.index');
-    }
+        $data = $request->validate([
+            'name' => 'required|string|max:100',
+            'type' => 'required|in:pengeluaran,costum',
+        ]);
 
-    public function show($id)
-    {
-        $category = $this->categoryService->find($id);
-        return view('admin.categories.show', compact('category'));
+        $this->categoryService->create($data);
+
+        return redirect()
+            ->route('admin.master.categories.index', ['type' => $data['type']])
+            ->with('success', 'Kategori berhasil ditambahkan.');
     }
 
     public function edit($id)
     {
         $category = $this->categoryService->find($id);
-        return view('admin.categories.edit', compact('category'));
+        return view('admin.master.categories.edit', compact('category'));
     }
 
     public function update(Request $request, $id)
     {
-        // TODO: implement
-        return redirect()->route('admin.categories.index');
+        $data = $request->validate([
+            'name' => 'required|string|max:100',
+            'type' => 'required|in:pengeluaran,costum',
+        ]);
+
+        $this->categoryService->update($data, $id);
+
+        return redirect()
+            ->route('admin.master.categories.index', ['type' => $data['type']])
+            ->with('success', 'Kategori berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
-        // TODO: implement
-        return redirect()->route('admin.categories.index');
+        $category = $this->categoryService->find($id);
+        $type = $category->type;
+
+        $this->categoryService->delete($id);
+
+        return redirect()
+            ->route('admin.master.categories.index', ['type' => $type])
+            ->with('success', 'Kategori berhasil dihapus.');
     }
 }

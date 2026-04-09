@@ -13,9 +13,14 @@ class FinanceService
         $this->financeRepository = $financeRepository;
     }
 
-    public function getAll()
+    public function getAll(array $filters = [])
     {
-        return $this->financeRepository->getAll();
+        return $this->financeRepository->getAll($filters);
+    }
+
+    public function paginate(int $perPage = 10, array $filters = [])
+    {
+        return $this->financeRepository->paginate($perPage, $filters);
     }
 
     public function find($id)

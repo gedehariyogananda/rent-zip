@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Override default Laravel tailwind pagination indigo colors to brand colors */
+.text-indigo-600 {
+    color: #4a6741 !important;
+}
+.bg-indigo-50 {
+    background-color: #f4f7f4 !important;
+}
+.ring-indigo-500 {
+    --tw-ring-color: #5f9959 !important;
+}
+.focus\:ring-indigo-500:focus {
+    --tw-ring-color: #5f9959 !important;
+}
+.border-indigo-500 {
+    border-color: #5f9959 !important;
+}
+.hover\:text-indigo-500:hover {
+    color: #5f9959 !important;
+}
+

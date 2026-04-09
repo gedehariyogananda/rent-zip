@@ -18,6 +18,11 @@ class CostumService
         return $this->costumRepository->getAll();
     }
 
+    public function paginate(int $perPage = 10, array $filters = [])
+    {
+        return $this->costumRepository->paginate($perPage, $filters);
+    }
+
     public function find($id)
     {
         return $this->costumRepository->find($id);

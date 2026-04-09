@@ -13,9 +13,9 @@ class CategoryService
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function getAll()
+    public function getAll(array $filters = [])
     {
-        return $this->categoryRepository->getAll();
+        return $this->categoryRepository->getAll($filters);
     }
 
     public function find($id)

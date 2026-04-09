@@ -7,9 +7,15 @@ use App\Repositories\Interfaces\CategoryRepositoryInterface;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
-    public function getAll()
+    public function getAll(array $filters = [])
     {
-        return Category::orderBy('name')->get();
+        $query = Category::query();
+
+        if (isset($filters["type"])) {
+            $query->where("type", $filters["type"]);
+        }
+
+        return $query->orderBy("name")->paginate(10);
     }
 
     public function find($id)

@@ -7,14 +7,39 @@ use App\Repositories\Interfaces\FinanceRepositoryInterface;
 
 class FinanceRepository implements FinanceRepositoryInterface
 {
-    public function getAll()
+    public function getAll(array $filters = [])
     {
-        return Finance::with('category')->orderByDesc('created_at')->get();
+        $query = Finance::with("category");
+
+        if (isset($filters["type"]) && $filters["type"] !== "") {
+            $query->where("type", $filters["type"]);
+        }
+
+        if (isset($filters["year"]) && $filters["year"] !== "") {
+            $query->whereYear("created_at", $filters["year"]);
+        }
+
+        return $query->orderByDesc("created_at")->get();
+    }
+
+    public function paginate(int $perPage = 10, array $filters = [])
+    {
+        $query = Finance::with("category");
+
+        if (isset($filters["type"]) && $filters["type"] !== "") {
+            $query->where("type", $filters["type"]);
+        }
+
+        if (isset($filters["year"]) && $filters["year"] !== "") {
+            $query->whereYear("created_at", $filters["year"]);
+        }
+
+        return $query->orderByDesc("created_at")->paginate($perPage);
     }
 
     public function find($id)
     {
-        return Finance::with('category')->find($id);
+        return Finance::with("category")->find($id);
     }
 
     public function store(array $data)

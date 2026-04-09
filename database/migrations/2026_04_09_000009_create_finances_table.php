@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('finances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
+            $table->foreignId('category_id')->nullable()->constrained('categories')->nullOnDelete();
             $table->decimal('total', 12, 2)->default(0);
             $table->text('desc')->nullable();
             $table->enum('type', ['pemasukan', 'pengeluaran']);
