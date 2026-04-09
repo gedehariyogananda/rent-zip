@@ -1,1 +1,63 @@
+# Laravel & PHP
 vendor/
+node_modules/
+.env
+.env.backup
+.env.*.php
+.env.*.local
+.phpunit.result.cache
+database.sqlite
+
+# Bootstrap Cache
+/bootstrap/cache/*
+!/bootstrap/cache/.gitkeep
+
+# Storage
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/framework/cache/data/*
+!/storage/framework/cache/data/.gitkeep
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitkeep
+/storage/framework/views/*
+!/storage/framework/views/.gitkeep
+/storage/app/public/*
+!/storage/app/public/.gitkeep
+/storage/app/uploads/*
+!/storage/app/uploads/.gitkeep
+
+# Public
+/public/storage
+/public/hot
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs & Debug
+*.log
+.claude
+
+# OS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Dependencies
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Testing & Coverage
+coverage/
+.nyc_output/
+
+# Build
+/build/
+/dist/
