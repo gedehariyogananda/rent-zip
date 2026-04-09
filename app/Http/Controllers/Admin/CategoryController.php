@@ -17,49 +17,52 @@ class CategoryController extends Controller
 
     public function index(Request $request)
     {
-        $type = $request->query('type', 'costum');
-        $categories = $this->categoryService->getAll(['type' => $type]);
-        return view('admin.master.categories.index', compact('categories', 'type'));
+        $type = $request->query("type", "costum");
+        $categories = $this->categoryService->getAll(["type" => $type]);
+        return view(
+            "admin.master.categories.index",
+            compact("categories", "type"),
+        );
     }
 
     public function create(Request $request)
     {
-        $type = $request->query('type', 'costum');
-        return view('admin.master.categories.create', compact('type'));
+        $type = $request->query("type", "costum");
+        return view("admin.master.categories.create", compact("type"));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:100',
-            'type' => 'required|in:pengeluaran,costum',
+            "name" => "required|string|max:100",
+            "type" => "required|in:pengeluaran,costum,maintenance",
         ]);
 
         $this->categoryService->create($data);
 
         return redirect()
-            ->route('admin.master.categories.index', ['type' => $data['type']])
-            ->with('success', 'Kategori berhasil ditambahkan.');
+            ->route("admin.master.categories.index", ["type" => $data["type"]])
+            ->with("success", "Kategori berhasil ditambahkan.");
     }
 
     public function edit($id)
     {
         $category = $this->categoryService->find($id);
-        return view('admin.master.categories.edit', compact('category'));
+        return view("admin.master.categories.edit", compact("category"));
     }
 
     public function update(Request $request, $id)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:100',
-            'type' => 'required|in:pengeluaran,costum',
+            "name" => "required|string|max:100",
+            "type" => "required|in:pengeluaran,costum,maintenance",
         ]);
 
         $this->categoryService->update($data, $id);
 
         return redirect()
-            ->route('admin.master.categories.index', ['type' => $data['type']])
-            ->with('success', 'Kategori berhasil diperbarui.');
+            ->route("admin.master.categories.index", ["type" => $data["type"]])
+            ->with("success", "Kategori berhasil diperbarui.");
     }
 
     public function destroy($id)
@@ -70,7 +73,7 @@ class CategoryController extends Controller
         $this->categoryService->delete($id);
 
         return redirect()
-            ->route('admin.master.categories.index', ['type' => $type])
-            ->with('success', 'Kategori berhasil dihapus.');
+            ->route("admin.master.categories.index", ["type" => $type])
+            ->with("success", "Kategori berhasil dihapus.");
     }
 }

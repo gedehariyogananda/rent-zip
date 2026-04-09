@@ -19,6 +19,11 @@
                   {{ $type === 'pengeluaran' ? 'bg-brand-700 text-white shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50' }}">
             Pengeluaran
         </a>
+        <a href="{{ route('admin.master.categories.index', ['type' => 'maintenance']) }}"
+           class="px-5 py-2 rounded-xl text-sm font-semibold transition-colors
+                  {{ $type === 'maintenance' ? 'bg-brand-700 text-white shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50' }}">
+            Pengurangan Stok
+        </a>
     </div>
     <a href="{{ route('admin.master.categories.create', ['type' => $type]) }}"
        class="flex items-center gap-2 px-5 py-2.5 bg-brand-700 hover:bg-brand-800 text-white rounded-xl text-sm font-bold transition-colors shadow-sm">
@@ -32,10 +37,10 @@
 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
     <div class="p-6 border-b border-gray-50 flex items-center justify-between">
         <h2 class="text-xl font-bold text-gray-800">
-            Daftar Kategori {{ $type === 'costum' ? 'Kostum' : 'Pengeluaran' }}
+            Daftar Kategori {{ $type === 'costum' ? 'Kostum' : ($type === 'pengeluaran' ? 'Pengeluaran' : 'Pengurangan Stok') }}
         </h2>
         <span class="text-xs font-bold tracking-wider uppercase px-3 py-1 rounded-full
-                     {{ $type === 'costum' ? 'bg-brand-50 text-brand-700' : 'bg-orange-50 text-orange-700' }}">
+                     {{ $type === 'costum' ? 'bg-brand-50 text-brand-700' : ($type === 'pengeluaran' ? 'bg-orange-50 text-orange-700' : 'bg-red-50 text-red-700') }}">
             {{ $categories->total() }} total
         </span>
     </div>
@@ -56,14 +61,18 @@
                 <div class="col-span-1 text-sm font-bold text-gray-400">{{ $no }}</div>
                 <div class="col-span-9 flex items-center gap-3">
                     <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0
-                                {{ $type === 'costum' ? 'bg-brand-100 text-brand-700' : 'bg-orange-100 text-orange-700' }}">
+                                {{ $type === 'costum' ? 'bg-brand-100 text-brand-700' : ($type === 'pengeluaran' ? 'bg-orange-100 text-orange-700' : 'bg-red-100 text-red-700') }}">
                         @if($type === 'costum')
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" />
                             </svg>
-                        @else
+                        @elseif($type === 'pengeluaran')
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                            </svg>
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
                             </svg>
                         @endif
                     </div>
@@ -97,7 +106,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
                 </div>
-                <p class="text-gray-500 text-sm font-medium">Belum ada kategori {{ $type === 'costum' ? 'kostum' : 'pengeluaran' }}.</p>
+                <p class="text-gray-500 text-sm font-medium">Belum ada kategori {{ $type === 'costum' ? 'kostum' : ($type === 'pengeluaran' ? 'pengeluaran' : 'pengurangan stok') }}.</p>
                 <a href="{{ route('admin.master.categories.create', ['type' => $type]) }}"
                    class="mt-3 inline-flex items-center text-sm font-semibold text-brand-600 hover:text-brand-800">
                     + Tambah sekarang

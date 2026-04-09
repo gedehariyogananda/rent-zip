@@ -50,10 +50,10 @@
         <div class="grid grid-cols-12 gap-4 pb-4 border-b border-gray-50 text-xs font-bold text-gray-400 uppercase tracking-wider px-4">
             <div class="col-span-1">#</div>
             <div class="col-span-1">FOTO</div>
-            <div class="col-span-4">NAMA / SUMBER</div>
+            <div class="col-span-3">NAMA / SUMBER</div>
             <div class="col-span-2">KATEGORI</div>
             <div class="col-span-1 text-center">SIZE</div>
-            <div class="col-span-1 text-center">STOK</div>
+            <div class="col-span-2">STOK & TERSEWA</div>
             <div class="col-span-1 text-right">HARGA/HARI</div>
             <div class="col-span-1 text-right">AKSI</div>
         </div>
@@ -80,7 +80,7 @@
                     @endif
                 </div>
 
-                <div class="col-span-4">
+                <div class="col-span-3">
                     <p class="text-sm font-semibold text-gray-800 leading-tight">{{ $costum->name }}</p>
                     @if($costum->source)
                         <p class="text-xs text-gray-400 mt-0.5">{{ $costum->source }}</p>
@@ -99,9 +99,28 @@
                     </span>
                 </div>
 
-                <div class="col-span-1 text-center text-sm font-semibold
-                            {{ $costum->stock <= 1 ? 'text-red-600' : ($costum->stock <= 3 ? 'text-amber-600' : 'text-gray-700') }}">
-                    {{ $costum->stock }}
+                <div class="col-span-2 flex flex-col justify-center pr-4">
+                    <div class="flex items-center justify-between text-xs mb-1">
+                        <span class="font-bold text-gray-700">{{ $costum->stock }} Max</span>
+                        <span class="font-medium text-gray-500">{{ $costum->rented_stock }} Tersewa</span>
+                    </div>
+                    @php
+                        $percentage = $costum->stock > 0 ? min(100, round(($costum->rented_stock / $costum->stock) * 100)) : 0;
+                        $barColor = $percentage >= 100 ? 'bg-gray-800' : ($percentage >= 80 ? 'bg-orange-700' : 'bg-brand-600');
+                        $bgColor = $percentage >= 100 ? 'bg-gray-200' : 'bg-brand-100';
+                    @endphp
+                    <div class="w-full h-1.5 {{ $bgColor }} rounded-full overflow-hidden flex mb-1.5">
+                        <div class="{{ $barColor }} h-full rounded-full" style="width: {{ $percentage }}%"></div>
+                    </div>
+                    <div>
+                        @if($costum->stock == 0 || $costum->available_stock <= 0)
+                            <span class="inline-flex px-2 py-0.5 rounded text-[9px] font-bold bg-gray-200 text-gray-600 uppercase tracking-wider">FULL</span>
+                        @elseif($costum->available_stock <= 2)
+                            <span class="inline-flex px-2 py-0.5 rounded text-[9px] font-bold bg-orange-100 text-orange-700 uppercase tracking-wider">CLOSING SOON</span>
+                        @else
+                            <span class="inline-flex px-2 py-0.5 rounded text-[9px] font-bold bg-[#d4edda] text-green-800 uppercase tracking-wider">AVAILABLE</span>
+                        @endif
+                    </div>
                 </div>
 
                 <div class="col-span-1 text-right text-sm font-semibold text-gray-700">

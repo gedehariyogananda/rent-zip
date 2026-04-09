@@ -113,12 +113,12 @@
                 {{-- Stok + Harga --}}
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Stok <span class="text-red-500">*</span>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5 flex justify-between items-center">
+                            <span>Stok</span>
+                            <span class="text-[10px] font-normal text-gray-500 bg-gray-100 px-2 py-0.5 rounded">Edit di Manajemen Stok</span>
                         </label>
-                        <input type="number" name="stock" value="{{ old('stock', $costum->stock) }}" min="0"
-                               class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 @error('stock') border-red-400 @enderror">
-                        @error('stock') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        <input type="number" name="stock" value="{{ old('stock', $costum->stock) }}" readonly
+                               class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-500 cursor-not-allowed focus:outline-none">
                     </div>
 
                     <div>

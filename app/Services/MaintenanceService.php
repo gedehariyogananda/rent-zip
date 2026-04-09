@@ -8,14 +8,20 @@ class MaintenanceService
 {
     protected MaintenanceRepositoryInterface $maintenanceRepository;
 
-    public function __construct(MaintenanceRepositoryInterface $maintenanceRepository)
-    {
+    public function __construct(
+        MaintenanceRepositoryInterface $maintenanceRepository,
+    ) {
         $this->maintenanceRepository = $maintenanceRepository;
     }
 
-    public function getAll()
+    public function getAll(array $filters = [])
     {
-        return $this->maintenanceRepository->getAll();
+        return $this->maintenanceRepository->getAll($filters);
+    }
+
+    public function paginate(int $perPage = 10, array $filters = [])
+    {
+        return $this->maintenanceRepository->paginate($perPage, $filters);
     }
 
     public function find($id)

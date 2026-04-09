@@ -4,7 +4,7 @@
 <div class="mb-8">
     <div class="flex items-center gap-2 text-sm text-gray-400 mb-3">
         <a href="{{ route('admin.master.categories.index', ['type' => $type]) }}" class="hover:text-brand-600 transition-colors">
-            {{ $type === 'costum' ? 'Kategori Kostum' : 'Kategori Pengeluaran' }}
+            {{ $type === 'costum' ? 'Kategori Kostum' : ($type === 'pengeluaran' ? 'Kategori Pengeluaran' : 'Kategori Pengurangan Stok') }}
         </a>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -37,6 +37,13 @@
                                class="text-orange-500 focus:ring-orange-400">
                         <span class="text-sm font-semibold text-gray-700">Pengeluaran</span>
                     </label>
+                    <label class="flex items-center gap-2 px-4 py-3 rounded-xl border-2 cursor-pointer transition-colors
+                                  {{ $type === 'maintenance' ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-gray-300' }}">
+                        <input type="radio" name="type" value="maintenance"
+                               {{ $type === 'maintenance' ? 'checked' : '' }}
+                               class="text-red-500 focus:ring-red-400">
+                        <span class="text-sm font-semibold text-gray-700">Pengurangan Stok</span>
+                    </label>
                 </div>
                 @error('type')
                     <p class="mt-1.5 text-xs text-red-500">{{ $message }}</p>
@@ -49,7 +56,7 @@
                     Nama Kategori <span class="text-red-500">*</span>
                 </label>
                 <input type="text" id="name" name="name" value="{{ old('name') }}"
-                       placeholder="{{ $type === 'costum' ? 'contoh: Anime Shounen' : 'contoh: Laundry & Cuci Kostum' }}"
+                       placeholder="{{ $type === 'costum' ? 'contoh: Anime Shounen' : ($type === 'pengeluaran' ? 'contoh: Beli Detergen' : 'contoh: Kostum Hilang/Rusak') }}"
                        class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent
                               @error('name') border-red-400 @enderror">
                 @error('name')

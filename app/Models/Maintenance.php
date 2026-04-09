@@ -10,17 +10,21 @@ class Maintenance extends Model
     use HasFactory;
 
     protected $fillable = [
-        'costum_id',
-        'pcs',
-        'is_wash',
-    ];
-
-    protected $casts = [
-        'is_wash' => 'boolean',
+        "costum_id",
+        "current_stock",
+        "category_id",
+        "type",
+        "pcs",
+        "desc",
     ];
 
     public function costum()
     {
         return $this->belongsTo(Costum::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

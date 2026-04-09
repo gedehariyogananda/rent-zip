@@ -9,17 +9,19 @@ class Costum extends Model
 {
     use HasFactory;
 
-    protected $table = 'costums';
+    protected $table = "costums";
+
+    protected $appends = ["rented_stock", "available_stock"];
 
     protected $fillable = [
-        'photo_url',
-        'name',
-        'source',
-        'size',
-        'stock',
-        'priceday',
-        'desc',
-        'category_id',
+        "photo_url",
+        "name",
+        "source",
+        "size",
+        "stock",
+        "priceday",
+        "desc",
+        "category_id",
     ];
 
     public function category()
@@ -40,5 +42,19 @@ class Costum extends Model
     public function maintenances()
     {
         return $this->hasMany(Maintenance::class);
+    }
+
+    public function getRentedStockAttribute()
+    {
+        return $this->orderItems()
+            ->whereHas("order", function ($query) {
+                $query->whereNotIn("status", ["canceled"]);
+            })
+            ->sum("pcs") ?? 0;
+    }
+
+    public function getAvailableStockAttribute()
+    {
+        return $this->stock - $this->rented_stock;
     }
 }

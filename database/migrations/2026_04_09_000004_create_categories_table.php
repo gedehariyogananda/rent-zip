@@ -4,20 +4,24 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create("categories", function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->enum('type', ['pengeluaran', 'costum']);
+            $table->string("name");
+            $table->enum("type", [
+                "pemasukan",
+                "pengeluaran",
+                "costum",
+                "maintenance",
+            ]);
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists("categories");
     }
 };
