@@ -40,19 +40,31 @@ Route::prefix("admin")
         Route::resource("maintenances", Admin\MaintenanceController::class);
 
         // Master Data
-        Route::prefix("master")->name("master.")->group(function () {
-            Route::resource("categories", Admin\CategoryController::class)
-                ->except(["show"]);
-        });
+        Route::prefix("master")
+            ->name("master.")
+            ->group(function () {
+                Route::resource(
+                    "categories",
+                    Admin\CategoryController::class,
+                )->except(["show"]);
+            });
 
         Route::controller(Admin\OrderController::class)
             ->prefix("orders")
             ->name("orders.")
             ->group(function () {
                 Route::get("/", "index")->name("index");
+                Route::get("/create", "create")->name("create");
+                Route::post("/", "store")->name("store");
                 Route::get("{id}", "show")->name("show");
+                Route::get("{id}/edit", "edit")->name("edit");
+                Route::put("{id}", "update")->name("update");
+                Route::post("{id}/qris", "qris")->name("qris");
                 Route::patch("{id}/status", "updateStatus")->name(
                     "updateStatus",
+                );
+                Route::patch("{id}/confirm-return", "confirmReturn")->name(
+                    "confirmReturn",
                 );
                 Route::delete("{id}", "destroy")->name("destroy");
             });

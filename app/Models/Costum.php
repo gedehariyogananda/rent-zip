@@ -48,7 +48,7 @@ class Costum extends Model
     {
         return $this->orderItems()
             ->whereHas("order", function ($query) {
-                $query->whereNotIn("status", ["canceled"]);
+                $query->where("status", "paid");
             })
             ->sum("pcs") ?? 0;
     }
