@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,15 +10,16 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    // assign the uuid as primary key and JWT Environment
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        'nama',
+        'username',
         'email',
         'password',
-        'photo_profile',
-        'division_id',
+        'phone',
+        'role_id',
+        'address',
+        'is_active',
     ];
 
     protected $hidden = [
@@ -28,10 +28,9 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'is_active' => 'boolean',
     ];
 
-    // jwt setup 
     public function getJWTIdentifier()
     {
         return $this->getKey();
@@ -42,16 +41,28 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    // relationship with Division
-    public function division()
+    public function role()
     {
-        return $this->belongsTo(Division::class);
+        return $this->belongsTo(Role::class);
     }
 
-    // relationship with Tugas
-    public function tugas()
+    public function profile()
     {
-        return $this->hasMany(Tugas::class);
+        return $this->hasOne(Profile::class);
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
+
+    public function rating()
+    {
+        return $this->hasOne(Rating::class);
+    }
 }

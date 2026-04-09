@@ -26,21 +26,24 @@ class AuthenticateController extends Controller
         }
 
         try {
-            $userCheck = User::where('email', $request->email)->first();
-            if (!$userCheck) {
-                return $this->apiError('User not found', 404);
+            $user = User::where('email', $request->email)->first();
+            if (!$user) {
+                return $this->apiError(404, 'User not found');
+            }
+
+            if (!$user->is_active) {
+                return $this->apiError(403, 'Account is not active');
             }
 
             if (!$token = Auth::guard('api')->attempt($validates->validated())) {
-                return $this->apiError('Unauthorized', 401);
+                return $this->apiError(401, 'Unauthorized');
             }
 
             return $this->apiSuccess([
-                'id' => $userCheck->id,
-                'nama' => $userCheck->nama,
-                'email' => $userCheck->email,
-                'photo_profile' => $userCheck->photo_profile,
-                'division_id' => $userCheck->division->nama_divisi,
+                'id' => $user->id,
+                'username' => $user->username,
+                'email' => $user->email,
+                'role' => $user->role->name,
                 'token' => $token,
             ], 200, 'Authentication successfully');
         } catch (Exception $e) {
