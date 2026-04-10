@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
 use App\Services\CostumService;
-use App\Models\SourceAnimeCategory;
-use App\Models\BrandCostumCategory;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CostumController extends Controller
@@ -20,8 +19,8 @@ class CostumController extends Controller
     public function index()
     {
         $costums = $this->costumService->getAll();
-        $sourceCategories = SourceAnimeCategory::all();
-        $brandCategories = BrandCostumCategory::all();
+        $sourceCategories = Category::where("type", "source_anime")->get();
+        $brandCategories = Category::where("type", "brand")->get();
         return view(
             "member.costums.index",
             compact("costums", "sourceCategories", "brandCategories"),

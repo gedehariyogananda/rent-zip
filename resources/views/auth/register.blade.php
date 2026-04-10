@@ -60,18 +60,18 @@
 
                 <!-- Username -->
                 <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                             </svg>
                         </div>
-                        <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name"
+                        <input id="username" type="text" name="username" value="{{ old('username') }}" required autofocus autocomplete="username"
                             class="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition duration-150 ease-in-out"
                             placeholder="Choose a unique alias">
                     </div>
-                    @error('name')
+                    @error('username')
                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>

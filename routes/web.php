@@ -86,6 +86,11 @@ Route::prefix("member")
     ->name("member.")
     ->middleware(["auth"])
     ->group(function () {
+        Route::get("/dashboard", [
+            Member\DashboardController::class,
+            "index",
+        ])->name("dashboard");
+
         Route::controller(Member\CostumController::class)
             ->prefix("costums")
             ->name("costums.")

@@ -31,7 +31,7 @@ class AuthController extends Controller
                 // Assuming 1 is Admin
                 return redirect()->intended("/admin/dashboard");
             }
-            return redirect()->intended("/member/costums");
+            return redirect()->intended("/member/dashboard");
         }
 
         return back()
@@ -49,7 +49,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            "name" => ["required", "string", "max:255"],
+            "username" => ["required", "string", "max:255"],
             "email" => [
                 "required",
                 "string",
@@ -61,7 +61,7 @@ class AuthController extends Controller
         ]);
 
         $user = User::create([
-            "name" => $request->name,
+            "username" => $request->username,
             "email" => $request->email,
             "password" => Hash::make($request->password),
             "role_id" => 2, // Assuming 2 is Member
@@ -69,7 +69,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect("/member/costums");
+        return redirect("/member/dashboard");
     }
 
     public function logout(Request $request)
