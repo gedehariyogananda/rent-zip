@@ -61,6 +61,9 @@
                                     <span class="bg-gray-100 px-2 py-1 rounded-md font-medium">Size: {{ $item->costum->size }}</span>
                                     <span>{{ $item->pcs }} pcs x Rp {{ number_format($item->costum->priceday, 0, ',', '.') }}</span>
                                 </div>
+                                @if($item->costum->lokasi)
+                                    <p class="text-sm text-gray-500 mt-2 bg-gray-50 p-2 rounded-lg inline-block border border-gray-100"><span class="font-semibold text-gray-700">Lokasi:</span> {{ $item->costum->lokasi }}</p>
+                                @endif
                             @else
                                 <h4 class="font-bold text-gray-800 text-lg mb-1">Kostum tidak ditemukan</h4>
                             @endif

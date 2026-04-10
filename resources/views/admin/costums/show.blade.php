@@ -115,6 +115,10 @@
                     <p class="text-lg font-bold text-gray-800">Rp {{ number_format($costum->priceday, 0, ',', '.') }}</p>
                 </div>
                 <div class="sm:col-span-2">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Lokasi</p>
+                    <p class="text-sm font-semibold text-gray-800">{{ $costum->lokasi ?: '-' }}</p>
+                </div>
+                <div class="sm:col-span-2">
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Deskripsi Tambahan</p>
                     <div class="text-sm text-gray-600 bg-gray-50 p-4 rounded-xl">
                         {{ $costum->desc ?: 'Tidak ada deskripsi.' }}

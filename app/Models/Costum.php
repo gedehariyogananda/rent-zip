@@ -21,6 +21,7 @@ class Costum extends Model
         "stock",
         "priceday",
         "desc",
+        "lokasi",
         "source_anime_category_id",
         "brand_costum_category_id",
         "paxel",

@@ -62,6 +62,11 @@
                         <p class="text-gray-600 leading-relaxed whitespace-pre-line">{{ $costum->desc ?: 'Tidak ada deskripsi untuk kostum ini.' }}</p>
                     </div>
 
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">Lokasi</h3>
+                        <p class="text-gray-600 leading-relaxed whitespace-pre-line">{{ $costum->lokasi ?: 'Belum ada informasi lokasi.' }}</p>
+                    </div>
+
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
                             <span class="text-xs text-gray-500 uppercase font-semibold">Ukuran Paket (Paxel)</span>

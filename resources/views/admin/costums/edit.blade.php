@@ -181,6 +181,15 @@
                     <textarea name="desc" rows="3"
                               class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none">{{ old('desc', $costum->desc) }}</textarea>
                 </div>
+
+                {{-- Lokasi --}}
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Lokasi</label>
+                    <input type="text" name="lokasi" value="{{ old('lokasi', $costum->lokasi) }}"
+                           placeholder="contoh: Mojokerto, Surabaya (Bisa input lebih dari satu lokasi)"
+                           class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 @error('lokasi') border-red-400 @enderror">
+                    @error('lokasi') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                </div>
             </div>
 
             <div class="flex gap-3">

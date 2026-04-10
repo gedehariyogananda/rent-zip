@@ -26,6 +26,7 @@ return new class extends Migration {
                 ->cascadeOnDelete();
             $table->enum("paxel", ["small", "medium", "large", "custom"]);
             $table->decimal("berat_jnt", 8, 2);
+            $table->string("lokasi")->nullable();
             $table->timestamps();
         });
     }
