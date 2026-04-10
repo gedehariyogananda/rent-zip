@@ -59,6 +59,8 @@ class DashboardController extends Controller
             ->take(4)
             ->values();
 
+        $activities = \App\Models\ActivityLog::latest()->take(5)->get();
+
         return view(
             "admin.dashboard",
             compact(
@@ -68,6 +70,7 @@ class DashboardController extends Controller
                 "kostumTersedia",
                 "chartData",
                 "popularSources",
+                "activities",
             ),
         );
     }

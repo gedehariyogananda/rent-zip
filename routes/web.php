@@ -124,3 +124,14 @@ Route::prefix("member")
                 Route::put("{id}", "update")->name("update");
             });
     });
+
+Route::get("/notifications/{id}/read", function ($id) {
+    $notif = \App\Models\Notification::findOrFail($id);
+    if ($notif->user_id === auth()->id()) {
+        $notif->update(["is_read" => true]);
+        return redirect($notif->url ?? url()->previous());
+    }
+    return back();
+})
+    ->name("notifications.read")
+    ->middleware("auth");

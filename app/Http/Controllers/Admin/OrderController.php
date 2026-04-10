@@ -222,6 +222,27 @@ class OrderController extends Controller
                 ]);
             }
 
+            $order->load("user", "items.costum");
+            $admins = User::where("role_id", 1)->get();
+            foreach ($admins as $admin) {
+                \App\Models\Notification::create([
+                    "user_id" => $admin->id,
+                    "title" => "Pesanan Baru",
+                    "message" => "Perlu validasi biaya dari user {$order->user->username} kode booking {$order->code_booking}.",
+                    "url" => route("admin.orders.show", $order->id),
+                ]);
+            }
+
+            foreach ($order->items as $item) {
+                if ($item->costum && $item->costum->available_stock <= 1) {
+                    \App\Models\ActivityLog::create([
+                        "user_id" => null,
+                        "type" => "stok_menipis",
+                        "description" => "Stok menipis untuk kostum {$item->costum->name} (Sisa: {$item->costum->available_stock})",
+                    ]);
+                }
+            }
+
             DB::commit();
 
             return redirect()
@@ -391,6 +412,31 @@ class OrderController extends Controller
                 "desc" => "Pembayaran Pesanan [{$order->code_booking}]",
                 "type" => "pemasukan",
             ]);
+
+            \App\Models\Notification::create([
+                "user_id" => $order->user_id,
+                "title" => "Pembayaran Berhasil",
+                "message" => "Verifikasi pembayaran pesanan {$order->code_booking} berhasil. Silakan menikmati dan mengembalikan tepat waktu.",
+                "url" => route("member.orders.show", $order->id),
+            ]);
+
+            \App\Models\ActivityLog::create([
+                "user_id" => auth()->id(),
+                "type" => "validasi",
+                "description" =>
+                    "Pembayaran pesanan {$order->code_booking} divalidasi oleh " .
+                    auth()->user()->username,
+            ]);
+
+            foreach ($order->items as $item) {
+                if ($item->costum && $item->costum->available_stock <= 1) {
+                    \App\Models\ActivityLog::create([
+                        "user_id" => null,
+                        "type" => "stok_menipis",
+                        "description" => "Stok menipis untuk kostum {$item->costum->name} (Sisa: {$item->costum->available_stock})",
+                    ]);
+                }
+            }
         } elseif (
             $request->status === "canceled" &&
             in_array($oldStatus, ["paid", "done"])
@@ -400,6 +446,14 @@ class OrderController extends Controller
                 "total" => $order->total,
                 "desc" => "Tidak jadinya pemesanan kode {$order->code_booking}",
                 "type" => "pengeluaran",
+            ]);
+        } elseif ($request->status === "canceled" && $oldStatus === "pending") {
+            \App\Models\ActivityLog::create([
+                "user_id" => auth()->id(),
+                "type" => "validasi",
+                "description" =>
+                    "Pembatalan pembayaran pesanan {$order->code_booking} dilakukan oleh " .
+                    auth()->user()->username,
             ]);
         }
 

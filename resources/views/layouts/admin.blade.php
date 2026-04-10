@@ -157,12 +157,38 @@
         <header class="h-20 bg-white/80 backdrop-blur-md border-b border-gray-100 flex items-center justify-end px-8 z-10 sticky top-0">
             <div class="flex items-center gap-6">
                 <!-- Notifications -->
-                <button class="text-gray-400 hover:text-gray-500 relative">
-                    <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white"></span>
-                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg>
-                </button>
+                @php
+                    $notifications = \App\Models\Notification::where('user_id', auth()->id())->where('is_read', false)->latest()->get();
+                @endphp
+                <div class="relative">
+                    <button onclick="document.getElementById('notif-dropdown').classList.toggle('hidden')" class="text-gray-400 hover:text-gray-500 relative focus:outline-none">
+                        @if($notifications->count() > 0)
+                        <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white"></span>
+                        @endif
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                    </button>
+
+                    <div id="notif-dropdown" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden z-50">
+                        <div class="p-3 border-b border-gray-100 bg-gray-50">
+                            <h3 class="text-sm font-semibold text-gray-700">Notifikasi</h3>
+                        </div>
+                        <div class="max-h-60 overflow-y-auto">
+                            @forelse($notifications as $notification)
+                                <a href="{{ route('notifications.read', $notification->id) }}" class="block p-3 border-b border-gray-50 hover:bg-gray-50">
+                                    <p class="text-sm font-semibold text-gray-800">{{ $notification->title }}</p>
+                                    <p class="text-xs text-gray-600 mt-1">{{ $notification->message }}</p>
+                                    <p class="text-[10px] text-gray-400 mt-1">{{ $notification->created_at->diffForHumans() }}</p>
+                                </a>
+                            @empty
+                                <div class="p-4 text-center text-sm text-gray-500">
+                                    Tidak ada notifikasi baru.
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Settings -->
                 <button class="text-gray-400 hover:text-gray-500">
