@@ -10,11 +10,13 @@ return new class extends Migration {
         Schema::create("categories", function (Blueprint $table) {
             $table->id();
             $table->string("name");
+            $table->text("desc")->nullable();
             $table->enum("type", [
                 "pemasukan",
                 "pengeluaran",
-                "costum",
                 "maintenance",
+                "source_anime",
+                "brand",
             ]);
             $table->timestamps();
         });

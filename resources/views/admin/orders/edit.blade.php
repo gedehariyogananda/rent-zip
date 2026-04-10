@@ -82,7 +82,7 @@
                                 <option value="">-- Pilih Kostum --</option>
                                 @foreach($costums as $costum)
                                     <option value="{{ $costum->id }}" data-price="{{ $costum->priceday }}" {{ $costum->available_stock <= 0 ? 'disabled' : '' }}>
-                                        {{ $costum->name }} - Rp {{ number_format($costum->priceday, 0, ',', '.') }}/hari (Sisa: {{ $costum->available_stock }})
+                                        {{ $costum->name }} - Rp {{ number_format($costum->priceday, 0, ',', '.') }}/3 Hari (Sisa: {{ $costum->available_stock }})
                                     </option>
                                 @endforeach
                             </select>
@@ -163,19 +163,33 @@
                 this.calculateTotal();
             },
             calculateTotal() {
-                this.days = 1;
-                if (this.tglSewa && this.tglKembali) {
+                this.days = 3;
+                if (this.tglSewa) {
                     const start = new Date(this.tglSewa);
-                    const end = new Date(this.tglKembali);
-                    if(end >= start) {
-                        const diffTime = Math.abs(end - start);
-                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                        this.days = diffDays > 0 ? diffDays : 1;
+                    let diffDays = 3;
+
+                    if (this.tglKembali) {
+                        const end = new Date(this.tglKembali);
+                        if (end >= start) {
+                            const diffTime = Math.abs(end - start);
+                            diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        }
                     }
+
+                    let multipleOf3 = Math.ceil(diffDays / 3) * 3;
+                    if (multipleOf3 === 0) multipleOf3 = 3;
+                    this.days = multipleOf3;
+
+                    const newEnd = new Date(start);
+                    newEnd.setDate(newEnd.getDate() + this.days);
+                    const year = newEnd.getFullYear();
+                    const month = String(newEnd.getMonth() + 1).padStart(2, '0');
+                    const day = String(newEnd.getDate()).padStart(2, '0');
+                    this.tglKembali = `${year}-${month}-${day}`;
                 }
 
                 this.grandTotal = this.items.reduce((total, item) => {
-                    return total + (item.price * item.pcs * this.days);
+                    return total + (item.price * Math.ceil(this.days / 3) * item.pcs);
                 }, 0);
             },
             formatRupiah(angka) {

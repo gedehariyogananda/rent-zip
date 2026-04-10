@@ -26,8 +26,8 @@
     <div class="{{ $user->role_id == 1 ? 'col-span-1' : 'lg:col-span-1' }}">
         <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="p-6 border-b border-gray-50 text-center">
-                @if($user->profile && $user->profile->avatar_url)
-                    <img src="{{ Storage::url($user->profile->avatar_url) }}" alt="Avatar" class="w-24 h-24 mx-auto rounded-full object-cover mb-4 border-4 border-brand-50 shadow-sm">
+                @if($user->avatar_url)
+                    <img src="{{ Storage::url($user->avatar_url) }}" alt="Avatar" class="w-24 h-24 mx-auto rounded-full object-cover mb-4 border-4 border-brand-50 shadow-sm">
                 @else
                     <div class="w-24 h-24 mx-auto rounded-full bg-brand-100 flex items-center justify-center text-brand-700 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor">
@@ -80,9 +80,14 @@
                     </div>
 
                     <div>
+                        <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">NIK</span>
+                        <p class="text-sm text-gray-800 font-medium">{{ $user->profile->nik ?: 'Belum diisi' }}</p>
+                    </div>
+
+                    <div>
                         <span class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Foto dengan NIK</span>
-                        @if($user->profile->nik_url)
-                            <a href="{{ Storage::url($user->profile->nik_url) }}" target="_blank" class="text-brand-600 hover:text-brand-700 text-sm font-medium flex items-center gap-1">
+                        @if($user->profile->photo_with_nik)
+                            <a href="{{ Storage::url($user->profile->photo_with_nik) }}" target="_blank" class="text-brand-600 hover:text-brand-700 text-sm font-medium flex items-center gap-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
                                 </svg>

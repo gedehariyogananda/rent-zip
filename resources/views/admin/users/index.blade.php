@@ -55,11 +55,15 @@
             <div class="grid grid-cols-12 gap-4 items-center p-4 bg-gray-50/50 rounded-xl hover:bg-gray-50 transition-colors">
                 <div class="col-span-1 text-sm font-bold text-gray-400">{{ $loop->iteration }}</div>
                 <div class="col-span-3 flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 bg-brand-100 text-brand-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
+                    @if($user->avatar_url)
+                        <img src="{{ Storage::url($user->avatar_url) }}" alt="Avatar" class="w-8 h-8 rounded-lg object-cover flex-shrink-0">
+                    @else
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 bg-brand-100 text-brand-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    @endif
                     <span class="text-sm font-semibold text-gray-800">{{ $user->username }}</span>
                 </div>
                 <div class="col-span-4 text-sm text-gray-600">

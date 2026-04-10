@@ -71,31 +71,53 @@
                     @error('name') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                 </div>
 
-                {{-- Sumber --}}
+                {{-- Name Anime --}}
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Sumber / Judul Anime</label>
-                    <input type="text" name="source" value="{{ old('source', $costum->source) }}"
-                           class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                        Nama Anime <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" name="name_anime" value="{{ old('name_anime', $costum->name_anime) }}"
+                           class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 @error('name_anime') border-red-400 @enderror">
+                    @error('name_anime') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                 </div>
 
-                {{-- Kategori + Size --}}
+                {{-- Kategori Source & Brand --}}
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Kategori <span class="text-red-500">*</span>
+                            Source Anime Category <span class="text-red-500">*</span>
                         </label>
-                        <select name="category_id"
-                                class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500 @error('category_id') border-red-400 @enderror">
-                            <option value="">Pilih Kategori</option>
-                            @foreach($categories as $cat)
-                                <option value="{{ $cat->id }}" {{ old('category_id', $costum->category_id) == $cat->id ? 'selected' : '' }}>
+                        <select name="source_anime_category_id"
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500 @error('source_anime_category_id') border-red-400 @enderror">
+                            <option value="">Pilih Source Anime</option>
+                            @foreach($sourceAnimes as $cat)
+                                <option value="{{ $cat->id }}" {{ old('source_anime_category_id', $costum->source_anime_category_id) == $cat->id ? 'selected' : '' }}>
                                     {{ $cat->name }}
                                 </option>
                             @endforeach
                         </select>
-                        @error('category_id') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        @error('source_anime_category_id') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                     </div>
 
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                            Brand Costum Category <span class="text-red-500">*</span>
+                        </label>
+                        <select name="brand_costum_category_id"
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500 @error('brand_costum_category_id') border-red-400 @enderror">
+                            <option value="">Pilih Brand</option>
+                            @foreach($brands as $cat)
+                                <option value="{{ $cat->id }}" {{ old('brand_costum_category_id', $costum->brand_costum_category_id) == $cat->id ? 'selected' : '' }}>
+                                    {{ $cat->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('brand_costum_category_id') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+
+                {{-- Ukuran, Paxel, Berat J&T --}}
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">
                             Ukuran <span class="text-red-500">*</span>
@@ -107,6 +129,28 @@
                             @endforeach
                         </select>
                         @error('size') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                            Paxel Box Size <span class="text-red-500">*</span>
+                        </label>
+                        <select name="paxel"
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500 @error('paxel') border-red-400 @enderror">
+                            @foreach(['small','medium','large','custom'] as $p)
+                                <option value="{{ $p }}" {{ old('paxel', $costum->paxel) == $p ? 'selected' : '' }}>{{ ucfirst($p) }}</option>
+                            @endforeach
+                        </select>
+                        @error('paxel') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                            Berat J&T (Kg) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" name="berat_jnt" value="{{ old('berat_jnt', $costum->berat_jnt) }}" min="0" step="0.1"
+                               class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 @error('berat_jnt') border-red-400 @enderror">
+                        @error('berat_jnt') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                     </div>
                 </div>
 
@@ -123,7 +167,7 @@
 
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">
-                            Harga / Hari (Rp) <span class="text-red-500">*</span>
+                            Harga Sewa / 3 Hari (Rp) <span class="text-red-500">*</span>
                         </label>
                         <input type="number" name="priceday" value="{{ old('priceday', $costum->priceday) }}" min="0" step="1000"
                                class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 @error('priceday') border-red-400 @enderror">

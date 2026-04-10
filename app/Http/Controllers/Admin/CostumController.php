@@ -4,23 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\CostumService;
-use App\Services\CategoryService;
+use App\Models\Category;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
 
 class CostumController extends Controller
 {
     protected CostumService $costumService;
-    protected CategoryService $categoryService;
     protected ImageService $imageService;
 
     public function __construct(
         CostumService $costumService,
-        CategoryService $categoryService,
         ImageService $imageService,
     ) {
         $this->costumService = $costumService;
-        $this->categoryService = $categoryService;
         $this->imageService = $imageService;
     }
 
@@ -28,34 +25,44 @@ class CostumController extends Controller
     {
         $filters = [
             "search" => $request->input("search"),
-            "category_id" => $request->input("category_id"),
+            "source_anime_category_id" => $request->input(
+                "source_anime_category_id",
+            ),
+            "brand_costum_category_id" => $request->input(
+                "brand_costum_category_id",
+            ),
         ];
 
         $costums = $this->costumService->paginate(10, $filters);
-        $categories = $this->categoryService->getAll(["type" => "costum"]);
+        $sourceAnimes = Category::where("type", "source_anime")->get();
+        $brands = Category::where("type", "brand")->get();
 
         return view(
             "admin.costums.index",
-            compact("costums", "categories", "filters"),
+            compact("costums", "sourceAnimes", "brands", "filters"),
         );
     }
 
     public function create()
     {
-        $categories = $this->categoryService->getAll(["type" => "costum"]);
-        return view("admin.costums.create", compact("categories"));
+        $sourceAnimes = Category::where("type", "source_anime")->get();
+        $brands = Category::where("type", "brand")->get();
+        return view("admin.costums.create", compact("sourceAnimes", "brands"));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
             "name" => "required|string|max:255",
-            "source" => "nullable|string|max:255",
+            "name_anime" => "required|string|max:255",
             "size" => "required|in:XS,S,M,L,XL,XXL",
             "stock" => "required|integer|min:0",
             "priceday" => "required|numeric|min:0",
             "desc" => "nullable|string",
-            "category_id" => "required|exists:categories,id",
+            "paxel" => "required|in:small,medium,large,custom",
+            "berat_jnt" => "required|numeric|min:0",
+            "source_anime_category_id" => "required|exists:categories,id",
+            "brand_costum_category_id" => "required|exists:categories,id",
             "photo_url" => "nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
         ]);
 
@@ -82,19 +89,26 @@ class CostumController extends Controller
     public function edit($id)
     {
         $costum = $this->costumService->find($id);
-        $categories = $this->categoryService->getAll(["type" => "costum"]);
-        return view("admin.costums.edit", compact("costum", "categories"));
+        $sourceAnimes = Category::where("type", "source_anime")->get();
+        $brands = Category::where("type", "brand")->get();
+        return view(
+            "admin.costums.edit",
+            compact("costum", "sourceAnimes", "brands"),
+        );
     }
 
     public function update(Request $request, $id)
     {
         $data = $request->validate([
             "name" => "required|string|max:255",
-            "source" => "nullable|string|max:255",
+            "name_anime" => "required|string|max:255",
             "size" => "required|in:XS,S,M,L,XL,XXL",
             "priceday" => "required|numeric|min:0",
             "desc" => "nullable|string",
-            "category_id" => "required|exists:categories,id",
+            "paxel" => "required|in:small,medium,large,custom",
+            "berat_jnt" => "required|numeric|min:0",
+            "source_anime_category_id" => "required|exists:categories,id",
+            "brand_costum_category_id" => "required|exists:categories,id",
             "photo_url" => "nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
         ]);
 

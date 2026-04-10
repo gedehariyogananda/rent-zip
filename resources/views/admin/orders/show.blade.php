@@ -121,7 +121,7 @@
                         <thead>
                             <tr class="border-b border-gray-100">
                                 <th class="pb-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Kostum</th>
-                                <th class="pb-3 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">Harga/Hari</th>
+                                <th class="pb-3 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">Harga/3 Hari</th>
                                 <th class="pb-3 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">Jumlah</th>
                                 <th class="pb-3 text-xs font-bold text-gray-400 uppercase tracking-wider text-right">Subtotal</th>
                             </tr>
@@ -143,7 +143,7 @@
                                 </td>
                                 <td class="py-4 text-right">
                                     @php
-                                        $subtotal = ($item->costum->priceday ?? 0) * $item->pcs * $days;
+                                        $subtotal = ($item->costum ? $item->costum->calculatePrice($days) : 0) * $item->pcs;
                                     @endphp
                                     <p class="text-sm font-bold text-brand-700">Rp {{ number_format($subtotal, 0, ',', '.') }}</p>
                                 </td>

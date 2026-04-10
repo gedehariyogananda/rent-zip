@@ -81,23 +81,37 @@
                     <p class="text-sm font-semibold text-gray-800">{{ $costum->name }}</p>
                 </div>
                 <div>
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Sumber / Anime</p>
-                    <p class="text-sm font-semibold text-gray-800">{{ $costum->source ?? '-' }}</p>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Nama Anime</p>
+                    <p class="text-sm font-semibold text-gray-800">{{ $costum->name_anime ?? '-' }}</p>
                 </div>
                 <div>
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Kategori</p>
-                    <span class="inline-flex px-2.5 py-1 rounded-lg text-[10px] font-bold bg-brand-50 text-brand-700 uppercase tracking-wider">
-                        {{ $costum->category?->name ?? '-' }}
-                    </span>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Source / Brand</p>
+                    <div class="flex gap-2">
+                        <span class="inline-flex px-2.5 py-1 rounded-lg text-[10px] font-bold bg-brand-50 text-brand-700 uppercase tracking-wider">
+                            {{ $costum->sourceAnimeCategory?->name ?? '-' }}
+                        </span>
+                        <span class="inline-flex px-2.5 py-1 rounded-lg text-[10px] font-bold bg-gray-100 text-gray-600 uppercase tracking-wider">
+                            {{ $costum->brandCostumCategory?->name ?? '-' }}
+                        </span>
+                    </div>
                 </div>
                 <div>
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Ukuran</p>
-                    <span class="inline-flex px-2.5 py-1 rounded-lg text-[10px] font-bold bg-gray-100 text-gray-700 uppercase tracking-wider">
-                        {{ $costum->size }}
-                    </span>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Ukuran / Paxel</p>
+                    <div class="flex gap-2">
+                        <span class="inline-flex px-2.5 py-1 rounded-lg text-[10px] font-bold bg-gray-100 text-gray-700 uppercase tracking-wider">
+                            {{ $costum->size }}
+                        </span>
+                        <span class="inline-flex px-2.5 py-1 rounded-lg text-[10px] font-bold bg-gray-100 text-gray-700 uppercase tracking-wider">
+                            {{ ucfirst($costum->paxel) }}
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Berat J&T (Kg)</p>
+                    <p class="text-sm font-semibold text-gray-800">{{ $costum->berat_jnt ?? '-' }}</p>
                 </div>
                 <div class="sm:col-span-2">
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Harga Sewa / Hari</p>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Harga Sewa / 3 Hari</p>
                     <p class="text-lg font-bold text-gray-800">Rp {{ number_format($costum->priceday, 0, ',', '.') }}</p>
                 </div>
                 <div class="sm:col-span-2">

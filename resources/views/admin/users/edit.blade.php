@@ -14,11 +14,36 @@
 </div>
 
 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden max-w-3xl">
-    <form action="{{ route('admin.users.update', $user->id) }}" method="POST" class="p-8">
+    <form action="{{ route('admin.users.update', $user->id) }}" method="POST" enctype="multipart/form-data" class="p-8">
         @csrf
         @method('PUT')
 
         <div class="space-y-6">
+            {{-- Avatar --}}
+            <div>
+                <label for="avatar_url" class="block text-sm font-semibold text-gray-700 mb-2">Avatar <span class="text-gray-400 font-normal">(Opsional)</span></label>
+                <div class="relative">
+                    <input type="file"
+                           id="avatar_url"
+                           name="avatar_url"
+                           accept="image/*"
+                           class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all text-sm @error('avatar_url') border-red-500 focus:ring-red-500 @enderror">
+                </div>
+                @if($user->avatar_url)
+                    <div class="mt-2">
+                        <img src="{{ Storage::url($user->avatar_url) }}" alt="Avatar" class="h-16 w-16 object-cover rounded-xl border border-gray-200">
+                    </div>
+                @endif
+                @error('avatar_url')
+                    <p class="mt-2 text-sm text-red-500 flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+
             {{-- Username --}}
             <div>
                 <label for="username" class="block text-sm font-semibold text-gray-700 mb-2">Username</label>
@@ -116,6 +141,52 @@
                               placeholder="Masukkan alamat pengguna">{{ old('address', $user->address) }}</textarea>
                 </div>
                 @error('address')
+                    <p class="mt-2 text-sm text-red-500 flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+
+            {{-- NIK --}}
+            <div>
+                <label for="nik" class="block text-sm font-semibold text-gray-700 mb-2">NIK <span class="text-gray-400 font-normal">(Opsional, untuk Member)</span></label>
+                <div class="relative">
+                    <input type="text"
+                           id="nik"
+                           name="nik"
+                           value="{{ old('nik', $user->profile->nik ?? '') }}"
+                           class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all text-sm @error('nik') border-red-500 focus:ring-red-500 @enderror"
+                           placeholder="Masukkan NIK">
+                </div>
+                @error('nik')
+                    <p class="mt-2 text-sm text-red-500 flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+
+            {{-- Foto dengan NIK --}}
+            <div>
+                <label for="photo_with_nik" class="block text-sm font-semibold text-gray-700 mb-2">Foto dengan NIK <span class="text-gray-400 font-normal">(Opsional, untuk Member)</span></label>
+                <div class="relative">
+                    <input type="file"
+                           id="photo_with_nik"
+                           name="photo_with_nik"
+                           accept="image/*"
+                           class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all text-sm @error('photo_with_nik') border-red-500 focus:ring-red-500 @enderror">
+                </div>
+                @if($user->profile && $user->profile->photo_with_nik)
+                    <div class="mt-2">
+                        <img src="{{ Storage::url($user->profile->photo_with_nik) }}" alt="Foto dengan NIK" class="h-20 w-auto object-cover rounded-xl border border-gray-200">
+                    </div>
+                @endif
+                @error('photo_with_nik')
                     <p class="mt-2 text-sm text-red-500 flex items-center gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />

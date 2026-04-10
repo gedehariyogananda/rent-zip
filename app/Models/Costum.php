@@ -16,17 +16,25 @@ class Costum extends Model
     protected $fillable = [
         "photo_url",
         "name",
-        "source",
+        "name_anime",
         "size",
         "stock",
         "priceday",
         "desc",
-        "category_id",
+        "source_anime_category_id",
+        "brand_costum_category_id",
+        "paxel",
+        "berat_jnt",
     ];
 
-    public function category()
+    public function sourceAnimeCategory()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, "source_anime_category_id");
+    }
+
+    public function brandCostumCategory()
+    {
+        return $this->belongsTo(Category::class, "brand_costum_category_id");
     }
 
     public function orderItems()
@@ -56,5 +64,10 @@ class Costum extends Model
     public function getAvailableStockAttribute()
     {
         return $this->stock - $this->rented_stock;
+    }
+
+    public function calculatePrice($days)
+    {
+        return $this->priceday * ceil($days / 3);
     }
 }

@@ -16,11 +16,20 @@
                 <input type="text" name="search" value="{{ $filters['search'] ?? '' }}"
                        placeholder="Cari nama kostum..."
                        class="px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
-                <select name="category_id" onchange="this.form.submit()"
+                <select name="source_anime_category_id" onchange="this.form.submit()"
                         class="px-4 py-2 border border-gray-200 rounded-xl text-sm text-gray-600 focus:outline-none">
-                    <option value="">Semua Kategori</option>
-                    @foreach($categories as $cat)
-                        <option value="{{ $cat->id }}" {{ ($filters['category_id'] ?? '') == $cat->id ? 'selected' : '' }}>
+                    <option value="">Semua Source Anime</option>
+                    @foreach($sourceAnimes as $cat)
+                        <option value="{{ $cat->id }}" {{ ($filters['source_anime_category_id'] ?? '') == $cat->id ? 'selected' : '' }}>
+                            {{ $cat->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <select name="brand_costum_category_id" onchange="this.form.submit()"
+                        class="px-4 py-2 border border-gray-200 rounded-xl text-sm text-gray-600 focus:outline-none">
+                    <option value="">Semua Brand</option>
+                    @foreach($brands as $cat)
+                        <option value="{{ $cat->id }}" {{ ($filters['brand_costum_category_id'] ?? '') == $cat->id ? 'selected' : '' }}>
                             {{ $cat->name }}
                         </option>
                     @endforeach
@@ -29,7 +38,7 @@
                         class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-sm font-semibold transition-colors">
                     Cari
                 </button>
-                @if(!empty($filters['search']) || !empty($filters['category_id']))
+                @if(!empty($filters['search']) || !empty($filters['source_anime_category_id']) || !empty($filters['brand_costum_category_id']))
                     <a href="{{ route('admin.costums.index') }}"
                        class="px-4 py-2 text-sm font-semibold text-gray-500 hover:text-gray-700">Reset</a>
                 @endif
@@ -50,11 +59,11 @@
         <div class="grid grid-cols-12 gap-4 pb-4 border-b border-gray-50 text-xs font-bold text-gray-400 uppercase tracking-wider px-4">
             <div class="col-span-1">#</div>
             <div class="col-span-1">FOTO</div>
-            <div class="col-span-3">NAMA / SUMBER</div>
-            <div class="col-span-2">KATEGORI</div>
-            <div class="col-span-1 text-center">SIZE</div>
+            <div class="col-span-3">NAMA / ANIME</div>
+            <div class="col-span-2">SOURCE / BRAND</div>
+            <div class="col-span-1 text-center">SIZE/PAXEL</div>
             <div class="col-span-2">STOK & TERSEWA</div>
-            <div class="col-span-1 text-right">HARGA/HARI</div>
+            <div class="col-span-1 text-right">HARGA/3 HARI</div>
             <div class="col-span-1 text-right">AKSI</div>
         </div>
 
@@ -82,21 +91,25 @@
 
                 <div class="col-span-3">
                     <p class="text-sm font-semibold text-gray-800 leading-tight">{{ $costum->name }}</p>
-                    @if($costum->source)
-                        <p class="text-xs text-gray-400 mt-0.5">{{ $costum->source }}</p>
+                    @if($costum->name_anime)
+                        <p class="text-xs text-gray-400 mt-0.5">{{ $costum->name_anime }}</p>
                     @endif
                 </div>
 
-                <div class="col-span-2">
+                <div class="col-span-2 flex flex-col items-start gap-1">
                     <span class="inline-flex px-2.5 py-1 rounded-full text-[10px] font-bold bg-brand-50 text-brand-700 uppercase tracking-wider">
-                        {{ $costum->category?->name ?? '—' }}
+                        {{ $costum->sourceAnimeCategory?->name ?? '—' }}
+                    </span>
+                    <span class="inline-flex px-2.5 py-1 rounded-full text-[10px] font-bold bg-gray-100 text-gray-600 uppercase tracking-wider">
+                        {{ $costum->brandCostumCategory?->name ?? '—' }}
                     </span>
                 </div>
 
-                <div class="col-span-1 text-center">
+                <div class="col-span-1 flex flex-col items-center gap-1 text-center">
                     <span class="inline-flex px-2 py-0.5 rounded-lg text-xs font-bold bg-gray-100 text-gray-600">
                         {{ $costum->size }}
                     </span>
+                    <span class="text-[10px] text-gray-500 uppercase">{{ $costum->paxel }}</span>
                 </div>
 
                 <div class="col-span-2 flex flex-col justify-center pr-4">

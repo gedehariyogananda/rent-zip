@@ -110,7 +110,10 @@ class OrderController extends Controller
 
     public function create()
     {
-        $costums = Costum::with("category")->get();
+        $costums = Costum::with([
+            "sourceAnimeCategory",
+            "brandCostumCategory",
+        ])->get();
         $users = User::where("role_id", 2)->get();
         return view("admin.orders.create", compact("costums", "users"));
     }
@@ -139,7 +142,9 @@ class OrderController extends Controller
                 "address" => "required|string",
                 "no_darurat" => "required|string|max:20",
                 "ktp_url" => "required|image|mimes:jpeg,png,jpg|max:2048",
-                "nik_url" => "required|image|mimes:jpeg,png,jpg|max:2048",
+                "nik" => "required|string|max:255",
+                "photo_with_nik" =>
+                    "required|image|mimes:jpeg,png,jpg|max:2048",
             ]);
         }
 
@@ -162,15 +167,16 @@ class OrderController extends Controller
                 $ktpPath = $request
                     ->file("ktp_url")
                     ->store("profiles/ktp", "public");
-                $nikPath = $request
-                    ->file("nik_url")
-                    ->store("profiles/nik", "public");
+                $photoWithNikPath = $request
+                    ->file("photo_with_nik")
+                    ->store("profiles/photo_with_nik", "public");
 
                 Profile::create([
                     "user_id" => $user->id,
                     "no_darurat" => $request->no_darurat,
                     "ktp_url" => $ktpPath,
-                    "nik_url" => $nikPath,
+                    "nik" => $request->nik,
+                    "photo_with_nik" => $photoWithNikPath,
                 ]);
 
                 $userId = $user->id;
@@ -188,7 +194,7 @@ class OrderController extends Controller
 
             foreach ($request->costums as $item) {
                 $costum = Costum::find($item["id"]);
-                $subtotal = $costum->priceday * $item["pcs"] * $days;
+                $subtotal = $costum->calculatePrice($days) * $item["pcs"];
                 $total += $subtotal;
 
                 $orderItems[] = [
@@ -245,7 +251,10 @@ class OrderController extends Controller
                 ->with("error", "Hanya pesanan pending yang dapat diedit.");
         }
 
-        $costums = Costum::with("category")->get();
+        $costums = Costum::with([
+            "sourceAnimeCategory",
+            "brandCostumCategory",
+        ])->get();
         return view("admin.orders.edit", compact("order", "costums"));
     }
 
@@ -282,7 +291,7 @@ class OrderController extends Controller
 
             foreach ($request->costums as $item) {
                 $costum = Costum::find($item["id"]);
-                $subtotal = $costum->priceday * $item["pcs"] * $days;
+                $subtotal = $costum->calculatePrice($days) * $item["pcs"];
                 $total += $subtotal;
 
                 $orderItems[] = [

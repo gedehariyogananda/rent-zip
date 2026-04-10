@@ -13,6 +13,7 @@ return new class extends Migration {
                 ->foreignId("costum_id")
                 ->constrained("costums")
                 ->cascadeOnDelete();
+            $table->integer("current_stock")->nullable();
             $table
                 ->foreignId("category_id")
                 ->nullable()
