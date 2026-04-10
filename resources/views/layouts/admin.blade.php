@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Rental Kostum') }} - Admin Dashboard</title>
+    <link rel="icon" type="image/png" href="{{ asset('base-images/logo-app.png') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,13 +50,11 @@
             <!-- Logo -->
             <div class="h-20 flex items-center px-6 border-b border-gray-100">
                 <div class="flex items-center gap-3 text-brand-600">
-                    <div class="w-8 h-8 bg-brand-600 text-white rounded-lg flex items-center justify-center font-bold">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" />
-                        </svg>
+                    <div class="w-8 h-8 flex items-center justify-center">
+                        <img src="{{ asset('base-images/logo-app.png') }}" alt="Logo" class="w-full h-full object-contain">
                     </div>
                     <div class="flex flex-col">
-                        <span class="font-bold text-sm leading-tight text-gray-900">Costume Central</span>
+                        <span class="font-bold text-sm leading-tight text-gray-900">{{ config('app.name', 'Rental Costum') }}</span>
                         <span class="text-[10px] uppercase tracking-wider text-gray-500 font-medium">Rental Management</span>
                     </div>
                 </div>
@@ -191,12 +190,12 @@
                 </div>
 
                 <!-- Settings -->
-                <button class="text-gray-400 hover:text-gray-500">
+                <a href="{{ route('admin.profile.edit') }}" class="text-gray-400 hover:text-gray-500">
                     <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                </button>
+                </a>
 
                 <div class="h-8 w-px bg-gray-200"></div>
 
@@ -207,10 +206,14 @@
                         <div class="text-[10px] text-gray-500 uppercase tracking-wider">Curator Access</div>
                     </div>
                     <div class="h-10 w-10 rounded-full bg-brand-900 flex items-center justify-center text-white overflow-hidden shadow-sm">
-                         <!-- Placeholder avatar -->
-                        <svg class="h-6 w-6 text-brand-300" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
+                        @if(Auth::user()->avatar_url)
+                            <img src="{{ Storage::url(Auth::user()->avatar_url) }}" alt="{{ Auth::user()->username }}" class="h-full w-full object-cover">
+                        @else
+                            <!-- Placeholder avatar -->
+                            <svg class="h-6 w-6 text-brand-300" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -249,7 +252,7 @@
                 </div>
             </div>
             <div class="pb-8 text-center text-[10px] font-bold tracking-widest text-gray-400 uppercase opacity-50">
-                Noctaringems Cosrent System
+                {{ config('app.name', 'Rental Costum') }} System
             </div>
         </div>
     </main>

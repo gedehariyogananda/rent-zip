@@ -39,6 +39,13 @@ Route::prefix("admin")
         Route::resource("finances", Admin\FinanceController::class);
         Route::resource("maintenances", Admin\MaintenanceController::class);
 
+        Route::get("profile", [Admin\ProfileController::class, "edit"])->name(
+            "profile.edit",
+        );
+        Route::put("profile", [Admin\ProfileController::class, "update"])->name(
+            "profile.update",
+        );
+
         // Master Data
         Route::prefix("master")
             ->name("master.")

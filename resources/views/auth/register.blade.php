@@ -19,7 +19,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
-                <span class="font-bold text-xl tracking-wide">Noctaringems Cosrent</span>
+                <span class="font-bold text-xl tracking-wide">{{ config('app.name', 'Rental Costum') }}</span>
             </div>
 
             <h1 class="text-5xl font-bold leading-tight mb-6">
@@ -155,7 +155,7 @@
 
             <div class="mt-16 text-center">
                 <p class="text-xs text-gray-400 uppercase tracking-wider">
-                    &copy; 2024 NOCTARINGEMS COSRENT. ALL RIGHTS RESERVED.
+                    &copy; {{ date('Y') }} {{ strtoupper(config('app.name', 'Rental Costum')) }}. ALL RIGHTS RESERVED.
                 </p>
             </div>
         </div>
