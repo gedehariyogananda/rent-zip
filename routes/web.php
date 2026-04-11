@@ -66,7 +66,6 @@ Route::prefix("admin")
                 Route::get("{id}", "show")->name("show");
                 Route::get("{id}/edit", "edit")->name("edit");
                 Route::put("{id}", "update")->name("update");
-                Route::post("{id}/qris", "qris")->name("qris");
                 Route::patch("{id}/status", "updateStatus")->name(
                     "updateStatus",
                 );

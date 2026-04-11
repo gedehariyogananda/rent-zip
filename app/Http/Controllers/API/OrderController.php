@@ -66,6 +66,66 @@ class OrderController extends Controller
     }
 
     /**
+     * Membuat Order Baru (POST /api/v1/orders)
+     */
+    public function store(Request $request)
+    {
+        try {
+            $request->validate([
+                "costum_id" => "required|integer|exists:costums,id",
+                "pcs" => "required|integer|min:1",
+                "start_date" => "required|date|after_or_equal:today",
+                "end_date" => "required|date|after_or_equal:start_date",
+            ]);
+
+            $user = Auth::guard("api")->user();
+
+            $result = $this->orderService->createOrder($user, $request->all());
+
+            return response()->json(
+                [
+                    "success" => true,
+                    "message" => "Order berhasil dibuat",
+                    "verified" => $result["verified"],
+                    "data" => $result["order"],
+                ],
+                201,
+            );
+        } catch (Exception $e) {
+            $code =
+                $e->getCode() >= 400 && $e->getCode() < 600
+                    ? $e->getCode()
+                    : 500;
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Gagal membuat order: " . $e->getMessage(),
+                ],
+                $code,
+            );
+        }
+    }
+
+    /**
+     * Menampilkan QRIS Statis dari folder public
+     * Endpoint: GET /api/v1/orders/qris
+     */
+    public function showQris()
+    {
+        return response()->json(
+            [
+                "success" => true,
+                "message" => "QRIS berhasil dimuat",
+                "data" => [
+                    // Ganti "qris.png" jika nama file gambar QRIS di folder public berbeda
+                    "qris_image_url" => url("base-images/qris-rent.jpeg"),
+                ],
+            ],
+            200,
+        );
+    }
+
+    /**
      * Get order detail by ID
      *
      * Endpoint: GET /api/v1/orders/{id}
@@ -90,6 +150,13 @@ class OrderController extends Controller
                 }
                 return $item;
             });
+
+            $isProfileIncomplete =
+                $order->status === "pending" && empty($order->qris);
+            if ($isProfileIncomplete) {
+                $order->action_message =
+                    "Lengkapi profile di pengaturan untuk melanjutkan pembayaran";
+            }
 
             return $this->apiSuccess(
                 $order,

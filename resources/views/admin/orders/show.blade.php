@@ -198,35 +198,15 @@
                                 Bayar Disetujui (Langsung)
                             </button>
                         </form>
-
-                        {{-- Generate QRIS if not exists --}}
-                        @if(!$order->qris && $status === 'pending')
-                            <div class="relative py-4 flex items-center">
-                                <div class="flex-grow border-t border-gray-200"></div>
-                                <span class="flex-shrink-0 mx-4 text-xs font-semibold text-gray-400 uppercase">ATAU</span>
-                                <div class="flex-grow border-t border-gray-200"></div>
-                            </div>
-
-                            <form action="{{ route('admin.orders.qris', $order->id) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="w-full flex items-center justify-center gap-2 px-5 py-3 bg-brand-100 hover:bg-brand-200 text-brand-700 rounded-xl text-sm font-bold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed" {{ $hasOutOfStock ? 'disabled' : '' }}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm2 2V5h1v1H5zM3 13a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3zm2 2v-1h1v1H5zM13 3a1 1 0 00-1 1v3a1 1 0 001 1h3a1 1 0 001-1V4a1 1 0 00-1-1h-3zm1 2v1h1V5h-1z" clip-rule="evenodd" />
-                                        <path d="M11 4a1 1 0 10-2 0v1a1 1 0 002 0V4zM10 7a1 1 0 011 1v1h2a1 1 0 110 2h-3a1 1 0 01-1-1V8a1 1 0 011-1zM16 9a1 1 0 100 2 1 1 0 000-2zM9 13a1 1 0 011-1h1a1 1 0 110 2v2a1 1 0 11-2 0v-3zM7 11a1 1 0 100-2H4a1 1 0 100 2h3zM17 13a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM16 17a1 1 0 100-2h-3a1 1 0 100 2h3z" />
-                                    </svg>
-                                    Buat QRIS Pembayaran
-                                </button>
-                            </form>
-                        @endif
                     </div>
                 @endif
 
-                {{-- Display QRIS --}}
-                @if($order->qris && $status === 'pending')
+                {{-- Display Static QRIS --}}
+                @if($status === 'pending')
                     <div class="mt-6 pt-6 border-t border-gray-100 text-center">
                         <p class="text-sm font-bold text-gray-800 mb-4">Minta Pelanggan Scan QRIS Ini</p>
                         <div class="bg-white p-3 inline-block rounded-2xl shadow-sm border border-gray-100 mb-6">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ $order->qris }}" alt="QRIS" class="w-48 h-48 rounded-xl">
+                            <img src="{{ url('base-images/qris-rent.jpeg') }}" alt="QRIS" class="w-48 h-48 rounded-xl object-contain">
                         </div>
 
                         <form action="{{ route('admin.orders.updateStatus', $order->id) }}" method="POST">

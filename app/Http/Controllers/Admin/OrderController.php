@@ -350,34 +350,6 @@ class OrderController extends Controller
         }
     }
 
-    public function qris($id)
-    {
-        $order = Order::with("items.costum")->findOrFail($id);
-
-        if ($order->status !== "pending") {
-            return back()->with(
-                "error",
-                "Hanya pesanan pending yang dapat membuat QRIS.",
-            );
-        }
-
-        foreach ($order->items as $item) {
-            if ($item->costum && $item->pcs > $item->costum->available_stock) {
-                return back()->with(
-                    "error",
-                    "Stok kostum {$item->costum->name} tidak mencukupi untuk diproses.",
-                );
-            }
-        }
-
-        $order->update([
-            "qris" => Str::random(20),
-            "status" => "pending",
-        ]);
-
-        return back()->with("success", "QRIS berhasil dibuat.");
-    }
-
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
@@ -457,6 +429,15 @@ class OrderController extends Controller
             ]);
         }
 
+        if ($request->status === "canceled" && $oldStatus !== "canceled") {
+            \App\Models\Notification::create([
+                "user_id" => $order->user_id,
+                "title" => "Pesanan Dibatalkan",
+                "message" => "Maaf pesanan kamu dibatalkan.",
+                "order_id" => $order->id,
+            ]);
+        }
+
         return back()->with(
             "success",
             "Status pesanan diperbarui menjadi " . $request->status,
@@ -476,6 +457,14 @@ class OrderController extends Controller
 
         $order->update([
             "status" => "done",
+        ]);
+
+        \App\Models\Notification::create([
+            "user_id" => $order->user_id,
+            "title" => "Terima Kasih!",
+            "message" =>
+                "Terima kasih telah memesan costum di kami, kami harap puas ya 😊",
+            "order_id" => $order->id,
         ]);
 
         return back()->with(

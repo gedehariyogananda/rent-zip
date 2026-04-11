@@ -2,7 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\Costum;
+use App\Models\Order;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class OrderService
 {
@@ -26,6 +30,59 @@ class OrderService
     public function findByUserId($userId, array $filters = [])
     {
         return $this->orderRepository->findByUserId($userId, $filters);
+    }
+
+    public function createOrder($user, array $data)
+    {
+        DB::beginTransaction();
+        try {
+            $costum = Costum::findOrFail($data["costum_id"]);
+
+            if ($costum->available_stock < $data["pcs"]) {
+                throw new \Exception(
+                    "Stok tidak mencukupi. Sisa stok: " .
+                        $costum->available_stock,
+                    400,
+                );
+            }
+
+            $startDate = Carbon::parse($data["start_date"]);
+            $endDate = Carbon::parse($data["end_date"]);
+            $rentDays = $startDate->diffInDays($endDate) + 1;
+
+            $totalPayment = $costum->calculatePrice($rentDays) * $data["pcs"];
+
+            $profile = $user->profile;
+            $isVerified =
+                !empty($user->address) &&
+                $profile &&
+                !empty($profile->nik) &&
+                !empty($profile->ktp_url);
+
+            $order = $this->orderRepository->store([
+                "user_id" => $user->id,
+                "code_booking" => "ORD-" . strtoupper(uniqid()),
+                "status" => "pending",
+                "total" => $totalPayment,
+                "tgl_sewa" => $data["start_date"],
+                "tgl_pengembalian" => $data["end_date"],
+            ]);
+
+            $order->items()->create([
+                "costum_id" => $costum->id,
+                "pcs" => $data["pcs"],
+            ]);
+
+            DB::commit();
+
+            return [
+                "order" => $order->load("items"),
+                "verified" => $isVerified,
+            ];
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     public function create(array $data)
