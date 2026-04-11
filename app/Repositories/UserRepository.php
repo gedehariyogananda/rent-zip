@@ -9,12 +9,17 @@ class UserRepository implements UserRepositoryInterface
 {
     public function getAll()
     {
-        return User::with('role')->orderBy('username')->get();
+        return User::with("role")->orderBy("username")->get();
     }
 
     public function find($id)
     {
-        return User::with('role', 'profile')->find($id);
+        return User::with("role", "profile")->find($id);
+    }
+
+    public function findByEmail($email)
+    {
+        return User::with("role")->where("email", $email)->first();
     }
 
     public function store(array $data)

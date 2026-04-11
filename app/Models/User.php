@@ -15,7 +15,10 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         "username",
         "email",
+        "email_verified_at",
         "password",
+        "otp",
+        "otp_expires_at",
         "avatar_url",
         "phone",
         "role_id",
@@ -26,6 +29,8 @@ class User extends Authenticatable implements JWTSubject
     protected $hidden = ["password", "remember_token"];
 
     protected $casts = [
+        "email_verified_at" => "datetime",
+        "otp_expires_at" => "datetime",
         "is_active" => "boolean",
     ];
 
