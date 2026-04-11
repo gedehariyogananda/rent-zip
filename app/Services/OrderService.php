@@ -23,9 +23,9 @@ class OrderService
         return $this->orderRepository->find($id);
     }
 
-    public function findByUserId($userId)
+    public function findByUserId($userId, array $filters = [])
     {
-        return $this->orderRepository->findByUserId($userId);
+        return $this->orderRepository->findByUserId($userId, $filters);
     }
 
     public function create(array $data)
@@ -41,5 +41,31 @@ class OrderService
     public function delete($id)
     {
         return $this->orderRepository->delete($id);
+    }
+
+    public function confirmPayment($id, $userId)
+    {
+        $order = $this->find($id);
+
+        if (!$order || $order->user_id !== $userId) {
+            throw new \Exception("Order not found or unauthorized", 404);
+        }
+
+        if ($order->status !== "pending") {
+            throw new \Exception("Only pending orders can be confirmed", 400);
+        }
+
+        $this->update(
+            [
+                "status" => "paid",
+                "qris" => null,
+            ],
+            $id,
+        );
+
+        $order->status = "paid";
+        $order->qris = null;
+
+        return $order;
     }
 }

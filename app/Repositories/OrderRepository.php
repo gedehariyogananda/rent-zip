@@ -9,17 +9,33 @@ class OrderRepository implements OrderRepositoryInterface
 {
     public function getAll()
     {
-        return Order::with('user', 'items.costum')->orderByDesc('created_at')->get();
+        return Order::with("user", "items.costum")
+            ->orderByDesc("created_at")
+            ->get();
     }
 
     public function find($id)
     {
-        return Order::with('user', 'items.costum')->find($id);
+        return Order::with("user", "items.costum")->find($id);
     }
 
-    public function findByUserId($userId)
+    public function findByUserId($userId, array $filters = [])
     {
-        return Order::with('items.costum')->where('user_id', $userId)->orderByDesc('created_at')->get();
+        $query = Order::with("items.costum")->where("user_id", $userId);
+
+        if (!empty($filters["status"])) {
+            $query->where("status", $filters["status"]);
+        }
+
+        if (!empty($filters["start_date"])) {
+            $query->whereDate("created_at", ">=", $filters["start_date"]);
+        }
+
+        if (!empty($filters["end_date"])) {
+            $query->whereDate("created_at", "<=", $filters["end_date"]);
+        }
+
+        return $query->orderByDesc("created_at")->get();
     }
 
     public function store(array $data)

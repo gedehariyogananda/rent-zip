@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AuthenticateController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\CostumController;
 use App\Http\Controllers\API\NotificationController;
+use App\Http\Controllers\API\OrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix("v1")->group(function () {
@@ -38,6 +39,14 @@ Route::prefix("v1")->group(function () {
                 Route::get("/unread", "unread");
                 Route::patch("/read-all", "markAllAsRead");
                 Route::patch("/{id}/read", "markAsRead");
+            });
+
+        Route::controller(OrderController::class)
+            ->prefix("orders")
+            ->group(function () {
+                Route::get("/", "index");
+                Route::get("/{id}", "show");
+                Route::put("/{id}/confirm-payment", "confirmPayment");
             });
     });
 });
