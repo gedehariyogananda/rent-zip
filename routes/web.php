@@ -141,7 +141,13 @@ Route::get("/notifications/{id}/read", function ($id) {
     $notif = \App\Models\Notification::findOrFail($id);
     if ($notif->user_id === auth()->id()) {
         $notif->update(["is_read" => true]);
-        return redirect($notif->url ?? url()->previous());
+        if ($notif->order_id) {
+            if (auth()->user()->role_id == 1) {
+                return redirect()->route("admin.orders.show", $notif->order_id);
+            }
+            return redirect()->route("member.orders.show", $notif->order_id);
+        }
+        return redirect(url()->previous());
     }
     return back();
 })

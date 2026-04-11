@@ -19,9 +19,11 @@ class CostumSeeder extends Seeder
             [
                 "name" => "Naruto Uzumaki — Sage Mode",
                 "name_anime" => "Naruto Shippuden",
+                "nama_cosplayer" => "Hakken",
                 "size" => "M",
                 "stock" => 3,
                 "priceday" => 75000,
+                "lokasi" => "Surabaya",
                 "desc" =>
                     "Kostum lengkap Naruto mode sage: jaket oranye, celana biru, headband Konoha, jubah merah hitam.",
                 "source_anime_category_id" => $sourceId,
@@ -531,6 +533,8 @@ class CostumSeeder extends Seeder
         ];
 
         foreach ($costums as $costum) {
+            $costum["nama_cosplayer"] = $costum["nama_cosplayer"] ?? null;
+            $costum["lokasi"] = $costum["lokasi"] ?? "Surabaya";
             Costum::create($costum);
         }
     }

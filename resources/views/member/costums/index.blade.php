@@ -65,6 +65,9 @@
                 <div>
                     <h4 class="font-bold text-gray-800 text-lg truncate" title="{{ $costum->name }}">{{ $costum->name }}</h4>
                     <p class="text-sm text-gray-500 mb-1 truncate" title="{{ $costum->name_anime }}">{{ $costum->name_anime }}</p>
+                    @if($costum->nama_cosplayer)
+                    <p class="text-xs text-gray-400 mb-1 truncate" title="{{ $costum->nama_cosplayer }}">Cosplayer: {{ $costum->nama_cosplayer }}</p>
+                    @endif
                     <p class="text-xs font-semibold {{ $costum->stock > 0 ? 'text-green-600' : 'text-red-500' }} mb-2">
                         Sisa Stok: {{ $costum->stock }}
                     </p>

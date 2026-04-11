@@ -39,7 +39,10 @@
             {{-- Details --}}
             <div class="flex flex-col">
                 <div class="mb-6">
-                    <p class="text-sm font-semibold text-[#859873] mb-2 uppercase tracking-wider">{{ $costum->name_anime }}</p>
+                    <p class="text-sm font-semibold text-[#859873] mb-1 uppercase tracking-wider">{{ $costum->name_anime }}</p>
+                    @if($costum->nama_cosplayer)
+                        <p class="text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">Cosplayer: {{ $costum->nama_cosplayer }}</p>
+                    @endif
                     <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">{{ $costum->name }}</h1>
 
                     <div class="flex items-center gap-4 mb-6">

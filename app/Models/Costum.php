@@ -17,6 +17,7 @@ class Costum extends Model
         "photo_url",
         "name",
         "name_anime",
+        "nama_cosplayer",
         "size",
         "stock",
         "priceday",

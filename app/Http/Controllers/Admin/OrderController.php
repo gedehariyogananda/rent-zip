@@ -229,7 +229,7 @@ class OrderController extends Controller
                     "user_id" => $admin->id,
                     "title" => "Pesanan Baru",
                     "message" => "Perlu validasi biaya dari user {$order->user->username} kode booking {$order->code_booking}.",
-                    "url" => route("admin.orders.show", $order->id),
+                    "order_id" => $order->id,
                 ]);
             }
 
@@ -416,8 +416,8 @@ class OrderController extends Controller
             \App\Models\Notification::create([
                 "user_id" => $order->user_id,
                 "title" => "Pembayaran Berhasil",
-                "message" => "Verifikasi pembayaran pesanan {$order->code_booking} berhasil. Silakan menikmati dan mengembalikan tepat waktu.",
-                "url" => route("member.orders.show", $order->id),
+                "message" => "Pembayaran untuk pesanan {$order->code_booking} berhasil dikonfirmasi.",
+                "order_id" => $order->id,
             ]);
 
             \App\Models\ActivityLog::create([

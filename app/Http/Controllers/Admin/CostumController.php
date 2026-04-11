@@ -55,6 +55,7 @@ class CostumController extends Controller
         $data = $request->validate([
             "name" => "required|string|max:255",
             "name_anime" => "required|string|max:255",
+            "nama_cosplayer" => "nullable|string|max:255",
             "size" => "required|in:XS,S,M,L,XL,XXL",
             "stock" => "required|integer|min:0",
             "priceday" => "required|numeric|min:0",
@@ -103,6 +104,7 @@ class CostumController extends Controller
         $data = $request->validate([
             "name" => "required|string|max:255",
             "name_anime" => "required|string|max:255",
+            "nama_cosplayer" => "nullable|string|max:255",
             "size" => "required|in:XS,S,M,L,XL,XXL",
             "priceday" => "required|numeric|min:0",
             "desc" => "nullable|string",

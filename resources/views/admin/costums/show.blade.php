@@ -85,6 +85,10 @@
                     <p class="text-sm font-semibold text-gray-800">{{ $costum->name_anime ?? '-' }}</p>
                 </div>
                 <div>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Nama Cosplayer</p>
+                    <p class="text-sm font-semibold text-gray-800">{{ $costum->nama_cosplayer ?: '-' }}</p>
+                </div>
+                <div>
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Source / Brand</p>
                     <div class="flex gap-2">
                         <span class="inline-flex px-2.5 py-1 rounded-lg text-[10px] font-bold bg-brand-50 text-brand-700 uppercase tracking-wider">

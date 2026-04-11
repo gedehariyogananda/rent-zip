@@ -81,6 +81,17 @@
                     @error('name_anime') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                 </div>
 
+                {{-- Nama Cosplayer --}}
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                        Nama Cosplayer (Opsional)
+                    </label>
+                    <input type="text" name="nama_cosplayer" value="{{ old('nama_cosplayer', $costum->nama_cosplayer) }}"
+                           placeholder="contoh: Hakken"
+                           class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 @error('nama_cosplayer') border-red-400 @enderror">
+                    @error('nama_cosplayer') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                </div>
+
                 {{-- Kategori Source & Brand --}}
                 <div class="grid grid-cols-2 gap-4">
                     <div>
