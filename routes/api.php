@@ -3,8 +3,8 @@
 use App\Http\Controllers\API\AuthenticateController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\CostumController;
-use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\EventController;
+use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -53,8 +53,11 @@ Route::prefix("v1")->group(function () {
         Route::controller(ProfileController::class)
             ->prefix("profile")
             ->group(function () {
-                Route::post("/", "update");
+                Route::get("/", "show");
                 Route::get("/check", "check");
+                Route::post("/checkout", "update");
+                Route::post("/update", "updateFull");
+                Route::post("/change-password", "changePassword");
             });
 
         Route::controller(OrderController::class)
