@@ -36,6 +36,12 @@ class CostumRepository implements CostumRepositoryInterface
             );
         }
 
+        if (!empty($filters["lokasi"])) {
+            $query->whereRaw("LOWER(lokasi) like ?", [
+                "%" . strtolower($filters["lokasi"]) . "%",
+            ]);
+        }
+
         return $query->orderBy("name")->paginate($perPage);
     }
 
