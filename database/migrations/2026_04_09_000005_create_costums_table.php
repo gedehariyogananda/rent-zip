@@ -27,6 +27,7 @@ return new class extends Migration {
             $table->enum("paxel", ["small", "medium", "large", "custom"]);
             $table->decimal("berat_jnt", 8, 2);
             $table->string("lokasi")->nullable();
+            $table->string("nama_cosplayer")->nullable();
             $table->timestamps();
         });
     }

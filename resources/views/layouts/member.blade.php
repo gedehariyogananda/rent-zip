@@ -25,8 +25,8 @@
 
                 {{-- Center Links --}}
                 <div class="hidden md:flex space-x-8 items-center h-full">
-                    <a href="#" class="text-sm font-semibold hover:text-[#f2f4ec] transition-colors h-full flex items-center border-b-2 border-transparent">JADWAL EVENT</a>
-                    <a href="{{ route('member.costums.index') }}" class="text-sm font-semibold hover:text-[#f2f4ec] transition-colors h-full flex items-center border-b-2 {{ request()->routeIs('member.costums.*') ? 'border-white' : 'border-transparent' }}">CARI KOSTUM</a>
+                    <a href="{{ route('member.events.index') }}" class="text-sm font-semibold hover:text-[#f2f4ec] transition-colors h-full flex items-center border-b-2 {{ request()->routeIs('member.events.*') ? 'border-white text-white' : 'border-transparent text-gray-200 hover:text-white' }}">JADWAL EVENT</a>
+                    <a href="{{ route('member.costums.index') }}" class="text-sm font-semibold hover:text-[#f2f4ec] transition-colors h-full flex items-center border-b-2 {{ request()->routeIs('member.costums.*') ? 'border-white text-white' : 'border-transparent text-gray-200 hover:text-white' }}">CARI KOSTUM</a>
                     <a href="{{ route('member.dashboard') }}" class="text-sm font-semibold transition-colors h-full flex items-center border-b-2 {{ request()->routeIs('member.dashboard') ? 'border-white text-white' : 'border-transparent text-gray-200 hover:text-white' }}">DASHBOARD</a>
                 </div>
 

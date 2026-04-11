@@ -15,7 +15,11 @@ return new class extends Migration {
             $table->foreignId("user_id")->constrained()->cascadeOnDelete();
             $table->string("title");
             $table->text("message");
-            $table->string("url")->nullable();
+            $table
+                ->foreignId("order_id")
+                ->nullable()
+                ->constrained("orders")
+                ->nullOnDelete();
             $table->boolean("is_read")->default(false);
             $table->timestamps();
         });

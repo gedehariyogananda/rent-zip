@@ -38,6 +38,7 @@ Route::prefix("admin")
         ])->name("finances.export");
         Route::resource("finances", Admin\FinanceController::class);
         Route::resource("maintenances", Admin\MaintenanceController::class);
+        Route::resource("events", Admin\EventController::class);
 
         Route::get("profile", [Admin\ProfileController::class, "edit"])->name(
             "profile.edit",
@@ -89,6 +90,10 @@ Route::prefix("member")
             Member\DashboardController::class,
             "index",
         ])->name("dashboard");
+
+        Route::get("events", [Member\EventController::class, "index"])->name(
+            "events.index",
+        );
 
         Route::controller(Member\CostumController::class)
             ->prefix("costums")

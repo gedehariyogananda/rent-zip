@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AuthenticateController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\CostumController;
 use App\Http\Controllers\API\NotificationController;
+use App\Http\Controllers\API\EventController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,13 @@ Route::prefix("v1")->group(function () {
         Route::get("categories/brands", "brands");
         Route::get("locations", "locations");
     });
+
+    Route::controller(EventController::class)
+        ->prefix("events")
+        ->group(function () {
+            Route::get("/", "index");
+            Route::get("/{id}", "show");
+        });
 
     Route::middleware("auth:api")->group(function () {
         Route::controller(AuthenticateController::class)->group(function () {

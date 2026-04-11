@@ -104,6 +104,13 @@
                     Manajemen User
                 </a>
 
+                <a href="{{ route('admin.events.index') }}" class="flex items-center px-4 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('admin.events.*') ? 'bg-brand-50 text-brand-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <svg class="mr-3 h-5 w-5 {{ request()->routeIs('admin.events.*') ? 'text-brand-600' : 'text-gray-400' }}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    Manajemen Event
+                </a>
+
                 {{-- Master Data --}}
                 <div class="pt-2">
                     <p class="px-4 mb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">Master Data</p>
