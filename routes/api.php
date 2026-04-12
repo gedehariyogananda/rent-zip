@@ -69,5 +69,17 @@ Route::prefix("v1")->group(function () {
                 Route::get("/{id}", "show");
                 Route::put("/{id}/confirm-payment", "confirmPayment");
             });
+
+        Route::controller(
+            \App\Http\Controllers\API\Admin\OrderController::class,
+        )
+            ->prefix("admin/orders")
+            ->group(function () {
+                Route::get("/", "index");
+                Route::get("/{id}", "show");
+                Route::patch("/{id}/verify", "verifyPayment");
+                Route::patch("/{id}/cancel", "cancel");
+                Route::patch("/{id}/done", "markAsDone");
+            });
     });
 });
