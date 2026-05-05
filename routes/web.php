@@ -5,9 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Member;
 use Illuminate\Support\Facades\Route;
 
-Route::get("/", function () {
-    return redirect()->route("login");
-});
+Route::get("/", [Member\DashboardController::class, "index"])->name("home");
 
 Route::controller(AuthController::class)->group(function () {
     Route::get("login", "showLoginForm")->name("login");

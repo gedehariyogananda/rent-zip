@@ -19,7 +19,11 @@
                     <img src="{{ asset('base-images/logo-app.png') }}" alt="Logo" class="h-12 w-12 object-contain bg-white rounded-full p-1">
                     <div>
                         <h1 class="font-bold text-xl tracking-wide uppercase">{{ config('app.name') }}</h1>
-                        <p class="text-xs text-[#e2e8d3] font-medium tracking-wider">SELAMAT SIANG, {{ strtoupper(auth()->user()->username ?? 'GUEST') }} / DASHBOARD</p>
+                        @auth
+                            <p class="text-xs text-[#e2e8d3] font-medium tracking-wider">SELAMAT SIANG, {{ strtoupper(auth()->user()->username) }} / DASHBOARD</p>
+                        @else
+                            <p class="text-xs text-[#e2e8d3] font-medium tracking-wider">SELAMAT SIANG, SILAKAN LOGIN</p>
+                        @endauth
                     </div>
                 </div>
 
@@ -32,32 +36,41 @@
 
                 {{-- Right Side: Profile & Logout --}}
                 <div class="flex items-center gap-4">
-                    <div class="text-right hidden sm:block">
-                        <p class="text-sm font-bold">{{ auth()->user()->username ?? 'Guest' }}</p>
-                        <p class="text-xs text-[#e2e8d3]">Premium Member</p>
-                    </div>
+                    @auth
+                        <div class="text-right hidden sm:block">
+                            <p class="text-sm font-bold">{{ auth()->user()->username }}</p>
+                            <p class="text-xs text-[#e2e8d3]">Premium Member</p>
+                        </div>
 
-                    {{-- Avatar & Dropdown (Simplified) --}}
-                    <div class="relative group cursor-pointer">
-                        <div class="h-10 w-10 rounded-full bg-white text-[#9cae88] flex items-center justify-center font-bold text-lg border-2 border-[#e2e8d3] overflow-hidden">
-                            @if(auth()->user() && auth()->user()->profile_photo)
-                                <img src="{{ Storage::url(auth()->user()->profile_photo) }}" alt="Avatar" class="w-full h-full object-cover">
-                            @else
-                                {{ substr(auth()->user()->username ?? 'G', 0, 1) }}
+                        {{-- Avatar & Dropdown (Simplified) --}}
+                        <div class="relative group cursor-pointer">
+                            <div class="h-10 w-10 rounded-full bg-white text-[#9cae88] flex items-center justify-center font-bold text-lg border-2 border-[#e2e8d3] overflow-hidden">
+                                @if(auth()->user()->profile_photo)
+                                    <img src="{{ Storage::url(auth()->user()->profile_photo) }}" alt="Avatar" class="w-full h-full object-cover">
+                                @else
+                                    {{ substr(auth()->user()->username, 0, 1) }}
+                                @endif
+                            </div>
+
+                            {{-- Dropdown Menu --}}
+                            <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 hidden group-hover:block border border-gray-100">
+                                <a href="{{ route('member.orders.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Orders</a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @else
+                        <div class="flex items-center gap-2">
+                            <a href="{{ route('login') }}" class="px-4 py-2 rounded-full bg-white text-[#9cae88] font-semibold hover:bg-gray-100">Login</a>
+                            @if (Route::has('register'))
+                                <a href="{{ route('register') }}" class="px-4 py-2 rounded-full border border-white text-white font-semibold hover:bg-white/10">Register</a>
                             @endif
                         </div>
-
-                        {{-- Dropdown Menu --}}
-                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 hidden group-hover:block border border-gray-100">
-                            <a href="{{ route('member.orders.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Orders</a>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
-                                    Logout
-                                </button>
-                            </form>
-                        </div>
-                    </div>
+                    @endauth
                 </div>
 
             </div>

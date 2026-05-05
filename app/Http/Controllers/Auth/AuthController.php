@@ -29,9 +29,9 @@ class AuthController extends Controller
             $user = Auth::user();
             if ($user->role_id == 1) {
                 // Assuming 1 is Admin
-                return redirect()->intended("/admin/dashboard");
+                return redirect()->intended(route('admin.dashboard'));
             }
-            return redirect()->intended("/member/dashboard");
+            return redirect()->intended(route('member.dashboard'));
         }
 
         return back()
@@ -69,7 +69,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect("/member/dashboard");
+        return redirect()->route('member.dashboard');
     }
 
     public function logout(Request $request)

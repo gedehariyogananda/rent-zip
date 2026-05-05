@@ -19,12 +19,15 @@ class DashboardController extends Controller
         // Get 4 latest costumes for featured section
         $featuredCostumes = Costum::latest()->take(4)->get();
 
-        // Get 2 recent rentals for the current user
-        $recentRentals = Order::with('items.costum')
-            ->where('user_id', auth()->id())
-            ->latest()
-            ->take(2)
-            ->get();
+        // Get 2 recent rentals for the current user if authenticated
+        $recentRentals = collect();
+        if (auth()->check()) {
+            $recentRentals = Order::with('items.costum')
+                ->where('user_id', auth()->id())
+                ->latest()
+                ->take(2)
+                ->get();
+        }
 
         // Static upcoming events
         $upcomingEvents = [

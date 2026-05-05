@@ -9,14 +9,27 @@
     <div class="bg-[#e2e8d3] rounded-3xl p-8 relative overflow-hidden flex flex-col md:flex-row items-center justify-between shadow-sm">
         <div class="z-10 relative space-y-4">
             <h2 class="text-3xl md:text-4xl font-extrabold text-[#5c6e46]">
-                Welcome back, {{ auth()->user()->username ?? 'Member' }}!
+                @auth
+                    Welcome back, {{ auth()->user()->username }}!
+                @else
+                    Welcome to {{ config('app.name') }}
+                @endauth
             </h2>
             <p class="text-[#72855a] font-medium text-lg">
                 Your costume for the upcoming "Anime Expo 2024" is ready...
             </p>
-            <button class="bg-[#859873] hover:bg-[#6c7d5c] text-white font-semibold py-3 px-6 rounded-full transition-colors inline-block mt-4 shadow-md">
-                Cek Event
-            </button>
+            @auth
+                <button class="bg-[#859873] hover:bg-[#6c7d5c] text-white font-semibold py-3 px-6 rounded-full transition-colors inline-block mt-4 shadow-md">
+                    Cek Event
+                </button>
+            @else
+                <div class="flex flex-wrap gap-3 mt-4">
+                    <a href="{{ route('login') }}" class="bg-[#859873] hover:bg-[#6c7d5c] text-white font-semibold py-3 px-6 rounded-full transition-colors shadow-md">Login</a>
+                    @if(Route::has('register'))
+                        <a href="{{ route('register') }}" class="bg-white text-[#859873] font-semibold py-3 px-6 rounded-full transition-colors shadow-md border border-[#859873] hover:bg-gray-100">Register</a>
+                    @endif
+                </div>
+            @endauth
         </div>
 
         {{-- Decorative Stars --}}
