@@ -29,7 +29,7 @@
     </a>
 </div>
 
-<div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+<div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-visible">
     <div class="p-6 border-b border-gray-50 flex items-center justify-between">
         <h2 class="text-xl font-bold text-gray-800">
             Daftar {{ ucfirst($roleName) }}
@@ -72,13 +72,13 @@
                 <div class="col-span-2 text-sm text-gray-600">
                     {{ $user->phone ?: '-' }}
                 </div>
-                <div class="col-span-2 flex justify-end relative group">
+                <div class="col-span-2 flex justify-end relative group overflow-visible">
                     <button class="text-gray-400 hover:text-gray-600 p-1 focus:outline-none">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
                         </svg>
                     </button>
-                    <div class="absolute right-0 top-8 w-32 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-10 hidden group-hover:block group-focus-within:block">
+                    <div class="absolute right-0 top-full mt-2 w-32 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-10 hidden group-hover:block group-focus-within:block">
                         <a href="{{ route('admin.users.show', $user->id) }}"
                            class="block px-4 py-2 text-sm text-brand-700 hover:bg-brand-50">Detail</a>
                         <a href="{{ route('admin.users.edit', $user->id) }}"
