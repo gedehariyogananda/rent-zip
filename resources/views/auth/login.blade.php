@@ -87,8 +87,22 @@
                             </svg>
                         </div>
                         <input id="password" type="password" name="password" required autocomplete="current-password"
-                            class="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition duration-150 ease-in-out"
+                            class="block w-full pl-10 pr-10 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition duration-150 ease-in-out"
                             placeholder="••••••••">
+                        <button
+                            type="button"
+                            id="toggle-password-visibility"
+                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
+                            aria-label="Tampilkan password"
+                            aria-pressed="false">
+                            <svg id="eye-open-icon" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7s-8.268-2.943-9.542-7z" />
+                            </svg>
+                            <svg id="eye-closed-icon" class="h-5 w-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.956 9.956 0 012.012-3.368M6.223 6.223A9.956 9.956 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.956 9.956 0 01-4.293 5.568M15 12a3 3 0 00-4.24-2.76M3 3l18 18" />
+                            </svg>
+                        </button>
                     </div>
                     @error('password')
                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -132,4 +146,20 @@
         </div>
     </div>
 </div>
+<script>
+    const passwordInput = document.getElementById('password');
+    const togglePasswordButton = document.getElementById('toggle-password-visibility');
+    const eyeOpenIcon = document.getElementById('eye-open-icon');
+    const eyeClosedIcon = document.getElementById('eye-closed-icon');
+
+    togglePasswordButton.addEventListener('click', () => {
+        const isPasswordHidden = passwordInput.type === 'password';
+
+        passwordInput.type = isPasswordHidden ? 'text' : 'password';
+        eyeOpenIcon.classList.toggle('hidden', isPasswordHidden);
+        eyeClosedIcon.classList.toggle('hidden', !isPasswordHidden);
+        togglePasswordButton.setAttribute('aria-pressed', String(isPasswordHidden));
+        togglePasswordButton.setAttribute('aria-label', isPasswordHidden ? 'Sembunyikan password' : 'Tampilkan password');
+    });
+</script>
 @endsection
